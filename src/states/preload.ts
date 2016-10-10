@@ -11,9 +11,9 @@ export default class PreloadState extends Phaser.State {
 
         this.load.spritesheet('mario', 'assets/mariospritesheet-small.png', 50, 50);
 
-        // since you can't add methods to existing classes in typescript you
-        // need to cast to any
+        // the phaser-tiled plugin requires casting this.load; not normally recommended
         (<any>this.load).tiledmap(cacheKey('testmap', 'tiledmap'),  'assets/map/grouptest.json', null, Phaser.Tilemap.TILED_JSON);
+
         this.load.image(cacheKey('testmap', 'tileset', 'super_mario'), 'assets/super_mario.png');
     }
 
