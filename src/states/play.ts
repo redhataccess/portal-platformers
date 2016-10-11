@@ -30,6 +30,7 @@ export default class PlayState extends Phaser.State {
         this.player.body.setRectangle(20, 50, 0, 0); // resize hit box to better reflect mario's actual size on screen
         this.player.anchor.setTo(0.5);
         this.player.animations.add('walk', [1, 2, 3, 4], 10, true);
+        this.player.animations.add('jump', [5], 10, true);
 
         this.game.camera.follow(this.player);
 
@@ -64,6 +65,9 @@ export default class PlayState extends Phaser.State {
         if (Math.abs(this.player.body.velocity.x) < 0.08){
             this.player.animations.stop();
             this.player.frame = 0;
+        }
+        if (jumping) {
+            this.player.animations.play('jump');
         }
     }
 
