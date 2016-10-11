@@ -17,7 +17,6 @@
     "gulp": "^3.9.1",
     "gulp-shell": "^0.5.2",
     "typescript": "^2.0.3",
-    "typings": "^1.4.0",
-    "watch": "^1.0.0"
+    "typings": "^1.4.0"
   }
 }
