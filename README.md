@@ -1,6 +1,6 @@
-# phaser-typescript
+# Portal Platformers
 
-A skeleton project for writing Phaser games in TypeScript.
+A collaboration game for the Customer Portal team.
 
 ## Setup
 
