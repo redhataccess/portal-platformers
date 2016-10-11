@@ -4,8 +4,8 @@ A collaboration game for the Customer Portal team.
 
 ## Setup
 
-    git clone git@github.com:mwcz/phaser-typescript.git
-    cd phaser-typescript
+    git clone git@github.com:redhataccess/portal-platformers.git
+    cd portal-platformers
     npm install
 
 ## Development commands
