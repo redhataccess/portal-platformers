@@ -15,9 +15,10 @@ export default class PlayState extends Phaser.State {
         this.game.physics.startSystem(Phaser.Physics.P2JS);
         this.game.physics.p2.applyDamping = true;
         this.game.physics.p2.applyGravity = true;
-        this.game.physics.p2.gravity.y = 8000;
+        this.game.physics.p2.gravity.y = 350;
         this.game.physics.p2.restitution = 0.1;
-        this.game.physics.p2.friction = 0.01;
+        this.game.physics.p2.friction = 0.3;
+        this.game.physics.p2.world.setGlobalStiffness(1e5);
         // this.map.addTilesetImage('SuperMarioBros-World1-1', 'tiles');
 
         // this.layer = this.map.createLayer('World1');
@@ -41,22 +42,22 @@ export default class PlayState extends Phaser.State {
         this.cursors = this.game.input.keyboard.createCursorKeys();
     }
     update() {
-        this.player.body.force.x = 0;
-        this.player.body.velocity.y = 0;
+        let jumping = !this.canJump();
+        let moveAmt = jumping ? 100 : 300;
 
-        if (this.cursors.up.isDown) {
-            this.player.body.moveUp(400);
+        if (this.cursors.up.isDown && !jumping) {
+            this.player.body.velocity.y = -400;
         }
 
         if (this.cursors.left.isDown) {
             this.player.scale.x = -1;
-            this.player.body.thrustLeft(300);
+            this.player.body.thrustLeft(moveAmt);
             this.player.animations.play('walk');
         }
 
         if (this.cursors.right.isDown) {
             this.player.scale.x = 1;
-            this.player.body.thrustRight(300);
+            this.player.body.thrustRight(moveAmt);
             this.player.animations.play('walk');
         }
 
@@ -64,5 +65,29 @@ export default class PlayState extends Phaser.State {
             this.player.animations.stop();
             this.player.frame = 0;
         }
+    }
+
+    canJump() {
+
+        let result = false;
+
+        for (let i=0; i < this.game.physics.p2.world.narrowphase.contactEquations.length; i++) {
+            let c = this.game.physics.p2.world.narrowphase.contactEquations[i];
+
+            if (c.bodyA === this.player.body.data || c.bodyB === this.player.body.data) {
+                var d = p2.vec2.dot(c.normalA, p2.vec2.fromValues(0,1));
+
+                if (c.bodyA === this.player.body.data) {
+                    d *= -1;
+                }
+
+                if (d > 0.5) {
+                    result = true;
+                }
+            }
+        }
+
+        return result;
+
     }
 }
