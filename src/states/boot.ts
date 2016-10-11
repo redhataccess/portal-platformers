@@ -4,7 +4,7 @@ import * as Tiled from 'phaser-tiled';
 export default class BootState extends Phaser.State {
 
     preload() {
-        this.load.image('loading-bar', 'assets/images/loading-bar.png');
+        this.load.image('loading-bar', 'assets/sprites/loading-bar.png');
     }
 
     create() {

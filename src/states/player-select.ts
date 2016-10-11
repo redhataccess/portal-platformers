@@ -4,12 +4,12 @@ import config from '../config';
 export default class PlayerSelectState extends Phaser.State {
 
     readonly title: string = 'Player Select...';
-    readonly duration: number = 4000;
+    readonly duration: number = 1000;
 
     create() {
         console.log('PlayerSelectState create');
 
-        const text = this.add.text(this.world.width/2, this.world.height/5, this.title, { font: `${config.splashFontSize}px ${config.fontFamily}`, fontWeight: 'bold', fill: "#0CFA68" });
+        const text = this.add.text(this.world.width/2, this.world.height/5, this.title, { font: `${config.splash.fontSize}px ${config.fontFamily}`, fontWeight: 'bold', fill: "#0CFA68" });
         text.anchor.set(0.5, 0.5);
 
         // switch to next state after duration elapses

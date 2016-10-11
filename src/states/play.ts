@@ -11,7 +11,7 @@ export default class PlayState extends Phaser.State {
         console.log('PlayState create');
 
         // the phaser-tiled plugin requires casting this.game; not normally recommended
-        this.map = (<any>this.game).add.tiledmap('testmap');
+        this.map = (<any>this.game).add.tiledmap('sketchworld');
         this.game.physics.startSystem(Phaser.Physics.P2JS);
         this.game.physics.p2.applyDamping = true;
         this.game.physics.p2.applyGravity = true;
@@ -23,7 +23,7 @@ export default class PlayState extends Phaser.State {
         // this.layer = this.map.createLayer('World1');
         // this.layer.resizeWorld();
 
-        this.player = this.game.add.sprite(30, 10, 'mario');
+        this.player = this.game.add.sprite(30, 10, 'player');
         this.game.physics.p2.enable(this.player);
         this.player.body.fixedRotation = true;
         this.player.body.setRectangle(20, 50, 0, 0); // resize hit box to better reflect mario's actual size on screen

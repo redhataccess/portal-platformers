@@ -17,12 +17,12 @@ export default class PreloadState extends Phaser.State {
 
         let cacheKey = Tiled.utils.cacheKey;
 
-        this.load.spritesheet('mario', 'assets/mariospritesheet-small.png', 50, 50);
+        this.load.spritesheet('player', 'assets/sprites/mariospritesheet-small.png', 50, 50);
 
         // the phaser-tiled plugin requires casting this.load; not normally recommended
-        (<any>this.load).tiledmap(cacheKey('testmap', 'tiledmap'),  'assets/map/grouptest.json', null, Phaser.Tilemap.TILED_JSON);
+        (<any>this.load).tiledmap(cacheKey('sketchworld', 'tiledmap'),  'assets/maps/sketchworld/sketchworld.json', null, Phaser.Tilemap.TILED_JSON);
 
-        this.load.image(cacheKey('testmap', 'tileset', 'super_mario'), 'assets/super_mario.png');
+        this.load.image(cacheKey('sketchworld', 'tileset', 'sketchworld'), 'assets/maps/sketchworld/sketchworld.png');
     }
 
     create() {
