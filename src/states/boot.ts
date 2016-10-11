@@ -11,6 +11,10 @@ export default class BootState extends Phaser.State {
 
     create() {
         console.log('BootState create');
+
+        // Phaser automatically pauses the game when focus is lost, but we
+        // don't want that.
+        this.stage.disableVisibilityChange = true;
     }
 
     update() {
