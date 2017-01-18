@@ -2,12 +2,6 @@
 
 A collaboration game for the Customer Portal team.
 
-## Prerequisites
-
-Make sure you have typings installed globally.
-
-    npm install -g typings
-
 ## Setup
 
     git clone git@github.com:redhataccess/portal-platformers.git
