@@ -1,10 +1,8 @@
-import * as Phaser from 'phaser';
-import * as Tiled from 'phaser-tiled';
-
-export default class BootState extends Phaser.State {
+class BootState extends Phaser.State {
 
     preload() {
         this.load.image('loading-bar', 'assets/sprites/loading-bar.png');
+        this.load.json('players', '../data/players.json');
     }
 
     create() {
@@ -20,4 +18,3 @@ export default class BootState extends Phaser.State {
     }
 
 }
-

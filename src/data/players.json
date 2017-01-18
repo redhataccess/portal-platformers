@@ -1,0 +1,18 @@
+[
+    {
+        "name": "Test Player",
+        "face": "./assets/players/test-player.png"
+    },
+    {
+        "name": "Test Player 2",
+        "face": "./assets/players/test-player-2.png"
+    },
+    {
+        "name": "Test Player 3",
+        "face": "./assets/players/test-player-3.png"
+    },
+    {
+        "name": "Test Player 4",
+        "face": "./assets/players/test-player-4.png"
+    }
+]

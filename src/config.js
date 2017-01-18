@@ -1,4 +1,4 @@
-const config = {
+Game.config = {
     splash: {
         fontSize: 44,
         duration: 1000,
@@ -7,5 +7,3 @@ const config = {
     fontFamily: 'monospace',
     gameTitle: 'Portal Platformers',
 };
-
-export default config;

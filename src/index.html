@@ -10,22 +10,20 @@
         </style>
     </head>
     <body>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.2/require.min.js"></script>
-        <script>
-            require.config({
-                baseUrl: '.',
-                waitSeconds: 360,
-                paths: {
-                    phaser: '//cdnjs.cloudflare.com/ajax/libs/phaser/2.5.0/phaser.min',
-                    lodash: '//cdnjs.cloudflare.com/ajax/libs/lodash.js/4.16.3/lodash.min',
-                    'phaser-tiled': './lib/phaser-tiled/phaser-tiled',
-                },
-                shim: {
-                    phaser: { exports: 'Phaser' },
-                    'phaser-tiled': { deps: ['phaser'] },
-                },
-            });
-            require(['app']);
-        </script>
+
+        <!-- third party modules -->
+        <script src="//cdnjs.cloudflare.com/ajax/libs/phaser/2.5.0/phaser.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/4.16.3/lodash.min.js"></script>
+        <script src="lib/phaser-tiled/phaser-tiled.js"></script>
+
+        <!-- first party modules -->
+        <script src="game.js"></script>
+        <script src="config.js"></script>
+        <script src="states/boot.js"></script>
+        <script src="states/play.js"></script>
+        <script src="states/player-select.js"></script>
+        <script src="states/preload.js"></script>
+        <script src="states/splash.js"></script>
+        <script src="main.js"></script>
     </body>
 </html>
