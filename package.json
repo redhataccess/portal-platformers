@@ -1,15 +1,19 @@
 {
-  "name": "phaser-ts",
+  "name": "portal-platformers-game",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "browser-sync start --server --serveStatic src --files 'src/**/*' --no-inject-changes --directory",
+    "build": "babel src --out-dir build --copy-files --presets=env"
   },
   "author": "",
   "license": "GPL-3.0",
   "dependencies": {},
   "devDependencies": {
-    "browser-sync": "^2.17.0"
+    "babel-cli": "^6.18.0",
+    "babel-preset-env": "^1.1.8",
+    "browser-sync": "^2.18.6"
   }
 }
