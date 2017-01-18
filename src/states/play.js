@@ -1,17 +1,9 @@
-import * as Phaser from 'phaser';
-import config from '../config';
-
-export default class PlayState extends Phaser.State {
-
-    private map: Phaser.Tilemap;
-    private player: Phaser.Sprite;
-    private cursors: Phaser.CursorKeys;
-
+class PlayState extends Phaser.State {
     create() {
         console.log('PlayState create');
 
         // the phaser-tiled plugin requires casting this.game; not normally recommended
-        this.map = (<any>this.game).add.tiledmap('sketchworld');
+        this.map = this.game.add.tiledmap('sketchworld');
         this.game.physics.startSystem(Phaser.Physics.P2JS);
         this.game.physics.p2.applyDamping = true;
         this.game.physics.p2.applyGravity = true;
@@ -38,7 +30,7 @@ export default class PlayState extends Phaser.State {
         // this.game.physics.arcade.collide(this.player, this.layer);
 
         // the phaser-tiled plugin requires casting this.game; not normally recommended
-        (<any>this.game).physics.p2.convertTiledCollisionObjects(this.map, 'physics_layer');
+        this.game.physics.p2.convertTiledCollisionObjects(this.map, 'physics_layer');
 
         this.cursors = this.game.input.keyboard.createCursorKeys();
     }
