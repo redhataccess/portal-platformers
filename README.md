@@ -2,6 +2,10 @@
 
 A collaboration game for the Customer Portal team.
 
+## Getting started
+
+This game is built with [Phaser](), an HTML5 game framework.  To get a feel for how Phaser works, I recommend going through the [Making your first Phaser game](http://phaser.io/tutorials/making-your-first-phaser-game) tutorial.  That should be a good preparation for working on Portal Platformers!
+
 ## Setup
 
     git clone git@github.com:redhataccess/portal-platformers.git
