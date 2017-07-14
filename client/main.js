@@ -1,1 +1,1 @@
-new Game();
+window.game = new Game();

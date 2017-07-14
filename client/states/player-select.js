@@ -1,15 +1,11 @@
 class PlayerSelectState extends Phaser.State {
     preload() {
         this.duration = 2000;
-        // TODO: prelaod players.json
         this.players = [];
     }
 
     create() {
         console.log('PlayerSelectState create');
-
-        // switch to next state after duration elapses
-        this.time.events.add(this.duration, this.next, this);
 
         this.playerSelect = document.querySelector('#player-select');
         this.playerSelect.style.display = "block";
@@ -18,8 +14,19 @@ class PlayerSelectState extends Phaser.State {
             .then(this.addPlayers.bind(this));
     }
 
-    next() {
-        // this.game.state.start('PlayState');
+    shutdown() {
+        this.playerSelect.style.display = "none";
+    }
+
+    next(player) {
+        this.game.state.start(
+            'PlayState',
+            true,
+            false,
+            {
+                player: player
+            }
+        );
     }
 
     loadPlayers() {
@@ -40,19 +47,37 @@ class PlayerSelectState extends Phaser.State {
     }
 
     addPlayers() {
-      const playerWrapper = document.querySelector('.player-wrapper');
+        const playerWrapper = document.querySelector('.player-wrapper');
 
-      this.players.forEach(player => {
-        const el = document.createElement('li');
-        const h5 = document.createElement('h5')
-        const img = document.createElement('img');
+        const loader = new Phaser.Loader(this.game);
+        loader.onLoadComplete.addOnce(onLoaded);
+        function onLoaded(){
+            console.log('[player-select] player data loaded and ready to be used');
+        };
 
-        img.src = player.images.imageForward;
-        h5.textContent = player.name;
+        this.players.forEach(player => {
+            // add face images to game cache
+            loader.image(`${player.name}-forward`, player.images.imageForward);
+            loader.image(`${player.name}-action`, player.images.imageAction);
+            loader.image(`${player.name}-dead`, player.images.imageDead);
 
-        el.appendChild(img);
-        el.appendChild(h5);
-        playerWrapper.appendChild(el);
-      });
+            // create menu elements!
+
+            const el = document.createElement('li');
+            const h5 = document.createElement('h5')
+            const img = document.createElement('img');
+
+            img.src = player.images.imageForward;
+            h5.textContent = player.name;
+
+            el.appendChild(img);
+            el.appendChild(h5);
+            playerWrapper.appendChild(el);
+
+            el.addEventListener('click', () => this.next(player));
+        });
+
+        // now start the loader
+        loader.start()
     }
 }
