@@ -1,8 +1,9 @@
 class PlayState extends Phaser.State {
-    init({ player }) {
+    init({ player, players }) {
         console.log('player is');
         console.log(player);
         this.currentPlayer = player;
+        this.players = players;
     }
     create() {
         console.log('PlayState create');

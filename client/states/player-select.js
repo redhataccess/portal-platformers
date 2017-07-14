@@ -28,7 +28,8 @@ class PlayerSelectState extends Phaser.State {
             true,
             false,
             {
-                player: player
+                player: player,
+                players: this.players,
             }
         );
     }
