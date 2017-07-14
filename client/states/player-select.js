@@ -2,6 +2,7 @@ class PlayerSelectState extends Phaser.State {
     preload() {
         this.duration = 2000;
         this.players = [];
+        this.template = null;
     }
 
     create() {
@@ -9,6 +10,9 @@ class PlayerSelectState extends Phaser.State {
 
         this.playerSelect = document.querySelector('#player-select');
         this.playerSelect.style.display = "block";
+
+        const source   = document.getElementById('player-template').innerHTML.trim();
+        this.template = Handlebars.compile(source);
 
         this.loadPlayers()
             .then(this.addPlayers.bind(this));
@@ -48,6 +52,9 @@ class PlayerSelectState extends Phaser.State {
 
     addPlayers() {
         const playerWrapper = document.querySelector('.player-wrapper');
+        playerWrapper.innerHTML = this.template({
+          players: this.players
+        });
 
         const loader = new Phaser.Loader(this.game);
         loader.onLoadComplete.addOnce(onLoaded);
@@ -60,21 +67,15 @@ class PlayerSelectState extends Phaser.State {
             loader.image(`${player.name}-forward`, player.images.imageForward);
             loader.image(`${player.name}-action`, player.images.imageAction);
             loader.image(`${player.name}-dead`, player.images.imageDead);
+        });
 
-            // create menu elements!
+        const playerEls = playerWrapper.querySelectorAll('li');
 
-            const el = document.createElement('li');
-            const h5 = document.createElement('h5')
-            const img = document.createElement('img');
-
-            img.src = player.images.imageForward;
-            h5.textContent = player.name;
-
-            el.appendChild(img);
-            el.appendChild(h5);
-            playerWrapper.appendChild(el);
-
-            el.addEventListener('click', () => this.next(player));
+        Array.from(playerEls).forEach(link => {
+          link.addEventListener('click', evt => {
+            const index = evt.currentTarget.getAttribute('data-index');
+            this.next(this.players[index]);
+          });
         });
 
         // now start the loader
