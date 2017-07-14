@@ -15,7 +15,7 @@ class PlayerSelectState extends Phaser.State {
         this.playerSelect.style.display = "block";
 
         this.loadPlayers()
-          .then(this.addPlayers.bind(this));
+            .then(this.addPlayers.bind(this));
     }
 
     next() {
@@ -23,8 +23,8 @@ class PlayerSelectState extends Phaser.State {
     }
 
     loadPlayers() {
-      const promise = new Promise((resolve, reject) => {
-        const playersRef = firebase.database().ref('/users');
+        const promise = new Promise((resolve, reject) => {
+            const playersRef = firebase.database().ref('/users');
 
         playersRef.once('value', snapshot => {
           const players = snapshot.val();
@@ -32,11 +32,11 @@ class PlayerSelectState extends Phaser.State {
             this.players.push(players[key]);
           });
 
-          resolve();
+                resolve();
+            });
         });
-      });
 
-      return promise;
+        return promise;
     }
 
     addPlayers() {
