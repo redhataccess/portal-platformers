@@ -2,6 +2,7 @@ class PlayState extends Phaser.State {
     init({ player }) {
         console.log('player is');
         console.log(player);
+        this.currentPlayer = player;
     }
     create() {
         console.log('PlayState create');
@@ -21,12 +22,19 @@ class PlayState extends Phaser.State {
         // this.layer.resizeWorld();
 
         this.player = this.game.add.sprite(30, 10, 'player');
+        this.player.scale.set(2, 2);
         this.game.physics.p2.enable(this.player);
         this.player.body.fixedRotation = true;
-        this.player.body.setRectangle(20, 50, 0, 0); // resize hit box to better reflect mario's actual size on screen
+        this.player.body.setRectangle(40, 100, 0, 0); // resize hit box to better reflect mario's actual size on screen
         this.player.anchor.setTo(0.5);
         this.player.animations.add('walk', [1, 2, 3, 4], 10, true);
         this.player.animations.add('jump', [5], 10, true);
+
+        // add player face
+        this.player.data.face = this.game.add.sprite(0, 0, `${this.currentPlayer.name}-forward`);
+        this.player.data.face.scale.set(0.2, 0.2);
+        this.player.data.face.position.set(-32, -32);
+        this.player.addChild(this.player.data.face);
 
         this.game.camera.follow(this.player);
 
@@ -47,13 +55,13 @@ class PlayState extends Phaser.State {
         }
 
         if (this.cursors.left.isDown) {
-            this.player.scale.x = -1;
+            this.player.scale.x = -2;
             this.player.body.thrustLeft(moveAmt);
             this.player.animations.play('walk');
         }
 
         if (this.cursors.right.isDown) {
-            this.player.scale.x = 1;
+            this.player.scale.x = 2;
             this.player.body.thrustRight(moveAmt);
             this.player.animations.play('walk');
         }
