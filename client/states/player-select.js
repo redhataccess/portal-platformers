@@ -26,7 +26,7 @@ class PlayerSelectState extends Phaser.State {
       const promise = new Promise((resolve, reject) => {
         const playersRef = firebase.database().ref('/users');
 
-        playersRef.on('value', snapshot => {
+        playersRef.once('value', snapshot => {
           const players = snapshot.val();
           Object.keys(players).forEach(key => {
             this.players.push(players[key]);
@@ -41,13 +41,18 @@ class PlayerSelectState extends Phaser.State {
 
     addPlayers() {
       const playerWrapper = document.querySelector('.player-wrapper');
-      console.log(this);
 
       this.players.forEach(player => {
         const el = document.createElement('li');
+        const h5 = document.createElement('h5')
+        const img = document.createElement('img');
 
+        img.src = player.images.imageForward;
+        h5.textContent = player.name;
+
+        el.appendChild(img);
+        el.appendChild(h5);
         playerWrapper.appendChild(el);
-        el.textContent = player.name;
       });
     }
 }
