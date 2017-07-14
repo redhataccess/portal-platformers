@@ -6,10 +6,48 @@
         <title>Phaser + TypeScript example project</title>
         <style type="text/css" media="screen">
             html, body { margin: 0; padding: 0 }
-            html, body { margin: 0; padding: 0 }
+            body { background-color: #000; }
+
+            #splash-screen {
+              display: none;
+              text-align: center;
+              color: #00b9e4;
+            }
+            #splash-screen h1 {
+              font-size: 5em;
+            }
+            #splash-screen p {
+              font-size: 2em;
+            }
+            #player-select {
+              display: none;
+              position: absolute;
+              top: 0;
+              z-index: 10;
+              color: white;
+              text-align: center;
+            }
+            #player-select h1 {
+              font-size: 3em;
+              text-align: center;
+            }
         </style>
     </head>
     <body>
+
+        <!-- splash screen -->
+        <div id="splash-screen">
+          <h1>Portal Platformers</h1>
+          <p>Red Hat Customer Portal</p>
+        </div>
+
+        <!-- player select screen -->
+        <div id="player-select">
+          <h1>Portal Platformers</h1>
+          <p>Choose your destiny</p>
+
+          <ul class="player-wrapper"></ul>
+        </div>
 
         <!-- third party modules -->
         <script src="//cdnjs.cloudflare.com/ajax/libs/phaser/2.5.0/phaser.min.js"></script>

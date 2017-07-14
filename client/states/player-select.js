@@ -1,7 +1,5 @@
 class PlayerSelectState extends Phaser.State {
     preload() {
-        this.title = 'Player Select...';
-        this.todo = 'TODO: add player select :)';
         this.duration = 2000;
         // TODO: prelaod players.json
         this.players = [];
@@ -10,22 +8,24 @@ class PlayerSelectState extends Phaser.State {
     create() {
         console.log('PlayerSelectState create');
 
-        const text = this.add.text(this.world.width/2, this.world.height/5, this.title, { font: `${Game.config.splash.fontSize}px ${Game.config.fontFamily}`, fontWeight: 'bold', fill: '#0CFA68' });
-        text.anchor.set(0.5, 0.5);
-
-        const todo = this.add.text(this.world.width/2, this.world.height/4, this.todo, { font: `${Game.config.splash.fontSize}px ${Game.config.fontFamily}`, fontWeight: 'bold', fill: '#0CFA68' });
-        todo.anchor.set(0.5, 0.5);
-
         // switch to next state after duration elapses
-        // this.time.events.add(this.duration, this.next, this);
+        this.time.events.add(this.duration, this.next, this);
+
+        this.playerSelect = document.querySelector('#player-select');
+        this.playerSelect.style.display = "block";
 
         let group = this.add.group();
 
         group.inputEnableChildren = true;
         group.ignoreChildInput = false;
 
+        var playerWrapper = document.querySelector('.player-wrapper');
+
         this.cache.getJSON('players').forEach((player) => {
-            group.create(0, 0, player.name);
+            // group.create(0, 0, player.name);
+            var el = document.createElement('li');
+            playerWrapper.appendChild(el);
+            el.textContent = player.name;
         });
 
         group.align(6, -1, 74, 74);
@@ -37,7 +37,6 @@ class PlayerSelectState extends Phaser.State {
     }
 
     next() {
-        this.game.state.start('PlayState');
+        // this.game.state.start('PlayState');
     }
 }
-
