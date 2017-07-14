@@ -38,15 +38,15 @@ class SplashState extends Phaser.State {
         });
 
         socket.on('server_message', function (msg) {
-            console.log(msg);
+            // console.log(msg);
         });
 
         socket.on('client_joined', function (msg) {
-            console.log(msg);
+            // console.log(msg);
         });
 
         socket.on('client_left', function (msg) {
-            console.log(msg);
+            // console.log(msg);
         });
 
         function sendString() {
