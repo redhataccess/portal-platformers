@@ -2,6 +2,7 @@ class PlayState extends Phaser.State {
     init({ player }) {
         console.log('player is');
         console.log(player);
+        this.currentPlayer = player;
     }
     create() {
         console.log('PlayState create');
@@ -20,15 +21,7 @@ class PlayState extends Phaser.State {
         // this.layer = this.map.createLayer('World1');
         // this.layer.resizeWorld();
 
-        this.player = this.game.add.sprite(30, 10, 'player');
-        this.game.physics.p2.enable(this.player);
-        this.player.body.fixedRotation = true;
-        this.player.body.setRectangle(20, 50, 0, 0); // resize hit box to better reflect mario's actual size on screen
-        this.player.anchor.setTo(0.5);
-        this.player.animations.add('walk', [1, 2, 3, 4], 10, true);
-        this.player.animations.add('jump', [5], 10, true);
-
-        this.game.camera.follow(this.player);
+        this.addPlayer(this.currentPlayer, true);
 
         // this.map.setCollisionBetween(1, 100, true, 'World1');
         // this.game.physics.arcade.collide(this.player, this.layer);
@@ -47,13 +40,13 @@ class PlayState extends Phaser.State {
         }
 
         if (this.cursors.left.isDown) {
-            this.player.scale.x = -1;
+            this.player.scale.x = -2;
             this.player.body.thrustLeft(moveAmt);
             this.player.animations.play('walk');
         }
 
         if (this.cursors.right.isDown) {
-            this.player.scale.x = 1;
+            this.player.scale.x = 2;
             this.player.body.thrustRight(moveAmt);
             this.player.animations.play('walk');
         }
@@ -64,6 +57,28 @@ class PlayState extends Phaser.State {
         }
         if (jumping) {
             this.player.animations.play('jump');
+        }
+    }
+
+    addPlayer(player, isMainPlayer) {
+        const playerSprite = this.game.add.sprite(30, 10, 'player');
+        playerSprite.scale.set(2, 2);
+        this.game.physics.p2.enable(playerSprite);
+        playerSprite.body.fixedRotation = true;
+        playerSprite.body.setRectangle(40, 100, 0, 0); // resize hit box to better reflect mario's actual size on screen
+        playerSprite.anchor.setTo(0.5);
+        playerSprite.animations.add('walk', [1, 2, 3, 4], 10, true);
+        playerSprite.animations.add('jump', [5], 10, true);
+
+        // add player face
+        playerSprite.data.face = this.game.add.sprite(0, 0, `${player.name}-forward`);
+        playerSprite.data.face.scale.set(0.2, 0.2);
+        playerSprite.data.face.position.set(-32, -32);
+        playerSprite.addChild(playerSprite.data.face);
+
+        if (isMainPlayer) {
+            this.player = playerSprite;
+            this.game.camera.follow(playerSprite);
         }
     }
 
