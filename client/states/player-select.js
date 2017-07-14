@@ -14,29 +14,40 @@ class PlayerSelectState extends Phaser.State {
         this.playerSelect = document.querySelector('#player-select');
         this.playerSelect.style.display = "block";
 
-        let group = this.add.group();
-
-        group.inputEnableChildren = true;
-        group.ignoreChildInput = false;
-
-        var playerWrapper = document.querySelector('.player-wrapper');
-
-        this.cache.getJSON('players').forEach((player) => {
-            // group.create(0, 0, player.name);
-            var el = document.createElement('li');
-            playerWrapper.appendChild(el);
-            el.textContent = player.name;
-        });
-
-        group.align(6, -1, 74, 74);
-
-        group.onChildInputDown.add((sprite, pointer) => {
-            console.log(`clicked on`, sprite);
-            this.next();
-        });
+        this.loadPlayers()
+          .then(this.addPlayers.bind(this));
     }
 
     next() {
         // this.game.state.start('PlayState');
+    }
+
+    loadPlayers() {
+      const promise = new Promise((resolve, reject) => {
+        const playersRef = firebase.database().ref('/users');
+
+        playersRef.on('value', snapshot => {
+          const players = snapshot.val();
+          Object.keys(players).forEach(key => {
+            this.players.push(players[key]);
+          });
+
+          resolve();
+        });
+      });
+
+      return promise;
+    }
+
+    addPlayers() {
+      const playerWrapper = document.querySelector('.player-wrapper');
+      console.log(this);
+
+      this.players.forEach(player => {
+        const el = document.createElement('li');
+
+        playerWrapper.appendChild(el);
+        el.textContent = player.name;
+      });
     }
 }
