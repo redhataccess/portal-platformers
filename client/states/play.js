@@ -32,9 +32,9 @@ class PlayState extends Phaser.State {
 
         this.cursors = this.game.input.keyboard.createCursorKeys();
 
-        let resetButton = document.createElement('button');
+        let resetButton = document.createElement('a');
         resetButton.classList.add('reset-btn');
-        resetButton.textContent = 'Reset';
+        resetButton.textContent = 'Restart';
 
         resetButton.addEventListener('click', () => {
           document.body.removeChild(resetButton);

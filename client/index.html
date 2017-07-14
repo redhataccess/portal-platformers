@@ -87,6 +87,7 @@
                 flex-direction: row;
                 flex-wrap: wrap;
               }
+            }
 
             @media (min-width: 535px) and (max-width: 705px) {
               #player-select ul li {
@@ -135,6 +136,21 @@
 
             #loader span:nth-child(3) {
               animation-delay: .4s;
+            }
+
+            .reset-btn {
+              position: absolute;
+              font-size: 1.1em;
+              top: 15px;
+              left: 15px;
+              cursor: pointer;
+              background: url(../assets/img/back.svg) no-repeat 0 50%;
+              padding-left: 2.2%;
+            }
+
+            .reset-btn:hover {
+              color: #c00;
+              text-decoration: underline;
             }
         </style>
     </head>
