@@ -1,6 +1,6 @@
 Game.config = {
     splash: {
         fontSize: 44,
-        duration: 400,
+        duration: 2000
     }
 };
