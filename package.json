@@ -5,12 +5,16 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "browser-sync start --server --serveStatic src --files 'src/**/*' --no-inject-changes --directory",
+    "start": "node server/server.js",
     "build": "babel src --out-dir build --copy-files --presets=env"
   },
   "author": "",
   "license": "GPL-3.0",
-  "dependencies": {},
+  "dependencies": {
+    "express": "^4.15.3",
+    "socket.io": "^2.0.3",
+    "socket.io-client": "^2.0.3"
+  },
   "devDependencies": {
     "babel-cli": "^6.18.0",
     "babel-preset-env": "^1.1.8",

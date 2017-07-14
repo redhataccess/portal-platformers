@@ -35,6 +35,7 @@ class PlayerSelectState extends Phaser.State {
             this.next();
         });
     }
+
     next() {
         this.game.state.start('PlayState');
     }
