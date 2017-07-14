@@ -11,7 +11,7 @@ class PreloadState extends Phaser.State {
 
         let cacheKey = Phaser.Plugin.Tiled.utils.cacheKey;
 
-        this.load.spritesheet('player', 'assets/sprites/mariospritesheet-small.png', 50, 50);
+        this.load.spritesheet('player', 'assets/sprites/player-spritesheet.png', 50, 50);
 
         this.load.tiledmap(
             cacheKey('sketchworld', 'tiledmap'),
