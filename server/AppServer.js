@@ -5,14 +5,14 @@ const NODEJS = typeof module !== 'undefined' && module.exports;
  * @param io
  * @constructor
  */
-let AppServer = function (io) {
+var AppServer = function (io) {
     //  Scope.
-    let self = this;
+    var self = this;
 
     self.io = io;
 
     // Example state
-    let updateCount = 0;
+    var updateCount = 0;
 
     setInterval(function () {
         // send to all clients
@@ -23,15 +23,15 @@ let AppServer = function (io) {
 
         console.log('Client connected headers:', JSON.stringify(socket.handshake));
 
-        let name = socket.handshake.query.name;
+        var name = socket.handshake.query.name;
 
         console.log("Name:", name);
 
         self.io.emit('client_joined', "Client joined: " + name);
 
         socket.on('binary_message', function (msg) {
-            let ab = toArrayBuffer(msg);
-            let arr = new Int32Array(ab);
+            var ab = toArrayBuffer(msg);
+            var arr = new Int32Array(ab);
             console.log(arr[0]);
         });
 
@@ -45,9 +45,9 @@ let AppServer = function (io) {
         });
 
         function toArrayBuffer(buffer) {
-            let ab = new ArrayBuffer(buffer.length);
-            let view = new Uint8Array(ab);
-            for (let i = 0; i < buffer.length; ++i) {
+            var ab = new ArrayBuffer(buffer.length);
+            var view = new Uint8Array(ab);
+            for (var i = 0; i < buffer.length; ++i) {
                 view[i] = buffer[i];
             }
             return ab;

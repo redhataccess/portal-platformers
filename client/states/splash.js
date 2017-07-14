@@ -26,7 +26,7 @@ class SplashState extends Phaser.State {
     }
 
     socketConnect() {
-        let socket = this.game.data.socket = io("http://localhost:3000", {query: 'name=' + Date.now()});
+        let socket = this.game.data.socket = io("http://localhost:8080", {query: 'name=' + Date.now()});
 
         socket.on('connect', function () {
             console.log("WebSocket connection established and ready.");
