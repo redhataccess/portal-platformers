@@ -3,11 +3,13 @@ class PlayerSelectState extends Phaser.State {
         this.duration = 2000;
         this.players = [];
         this.template = null;
+        this.loading = false;
     }
 
     create() {
         console.log('PlayerSelectState create');
 
+        this.loader = document.querySelector('#loader');
         this.playerSelect = document.querySelector('#player-select');
         this.playerSelect.style.display = "block";
 
@@ -15,7 +17,8 @@ class PlayerSelectState extends Phaser.State {
         this.template = Handlebars.compile(source);
 
         this.loadPlayers()
-            .then(this.addPlayers.bind(this));
+          .then(this.toggleLoader.bind(this))
+          .then(this.addPlayers.bind(this));
     }
 
     shutdown() {
@@ -36,16 +39,16 @@ class PlayerSelectState extends Phaser.State {
 
     loadPlayers() {
         const promise = new Promise((resolve, reject) => {
-            const playersRef = firebase.database().ref('/users');
+          const playersRef = firebase.database().ref('/users');
 
-        playersRef.once('value', snapshot => {
-          const players = snapshot.val();
-          Object.keys(players).forEach(key => {
-            this.players.push(players[key]);
-          });
-
-                resolve();
+          playersRef.once('value', snapshot => {
+            const players = snapshot.val();
+            Object.keys(players).forEach(key => {
+              this.players.push(players[key]);
             });
+
+            resolve();
+          });
         });
 
         return promise;
@@ -81,5 +84,9 @@ class PlayerSelectState extends Phaser.State {
 
         // now start the loader
         loader.start()
+    }
+
+    toggleLoader() {
+      this.loader.style.display = 'none';
     }
 }
