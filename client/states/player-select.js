@@ -15,7 +15,7 @@ class PlayerSelectState extends Phaser.State {
         this.playerSelect.style.display = "block";
 
         this.loadPlayers()
-          .then(this.addPlayers.bind(this));
+            .then(this.addPlayers.bind(this));
     }
 
     next() {
@@ -23,31 +23,31 @@ class PlayerSelectState extends Phaser.State {
     }
 
     loadPlayers() {
-      const promise = new Promise((resolve, reject) => {
-        const playersRef = firebase.database().ref('/users');
+        const promise = new Promise((resolve, reject) => {
+            const playersRef = firebase.database().ref('/users');
 
-        playersRef.on('value', snapshot => {
-          const players = snapshot.val();
-          Object.keys(players).forEach(key => {
-            this.players.push(players[key]);
-          });
+            playersRef.on('value', snapshot => {
+                const players = snapshot.val();
+                Object.keys(players).forEach(key => {
+                    this.players.push(players[key]);
+                });
 
-          resolve();
+                resolve();
+            });
         });
-      });
 
-      return promise;
+        return promise;
     }
 
     addPlayers() {
-      const playerWrapper = document.querySelector('.player-wrapper');
-      console.log(this);
+        const playerWrapper = document.querySelector('.player-wrapper');
+        console.log(this);
 
-      this.players.forEach(player => {
-        const el = document.createElement('li');
+        this.players.forEach(player => {
+            const el = document.createElement('li');
 
-        playerWrapper.appendChild(el);
-        el.textContent = player.name;
-      });
+            playerWrapper.appendChild(el);
+            el.textContent = player.name;
+        });
     }
 }
