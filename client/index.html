@@ -8,36 +8,49 @@
             html, body { margin: 0; padding: 0;}
             body { background-color: #000; font-family: 'overpass', sans-serif;}
 
+            h1 {
+              text-align: center;
+              font-weight: 400;
+              text-transform: uppercase;
+              color: #00b9e4;
+            }
+
+            /* splash screen */
             #splash-screen {
               display: none;
               position: fixed;
               width: 100%;
               height: 100%;
               text-align: center;
-              color: #00b9e4;
               margin-top: 8%;
             }
+
             #splash-screen h1 {
               font-size: 4em;
-              font-weight: 400;
-              text-transform: uppercase;;
             }
+
             #splash-screen img {
               width: 30%;
             }
 
+            /* player select */
             #player-select {
               display: none;
               position: absolute;
-              top: 0;
+              width: 100%;
+              height: 100%;
+              top: 3%;
               z-index: 10;
               color: white;
               text-align: center;
             }
+
             #player-select h1 {
               font-size: 2.5em;
-              text-align: center;
-              color: #00b9e4;
+            }
+
+            #player-select ul li {
+              list-style-type: none;
             }
         </style>
     </head>
