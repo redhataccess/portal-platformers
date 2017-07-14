@@ -44,21 +44,43 @@ class PlayState extends Phaser.State {
             this.player.scale.x = -2;
             this.player.body.thrustLeft(moveAmt);
             this.player.animations.play('walk');
+            this.forwardFace(this.player);
         }
 
         if (this.cursors.right.isDown) {
             this.player.scale.x = 2;
             this.player.body.thrustRight(moveAmt);
             this.player.animations.play('walk');
+            this.forwardFace(this.player);
         }
 
         if (Math.abs(this.player.body.velocity.x) < 0.08){
             this.player.animations.stop();
             this.player.frame = 0;
+            this.forwardFace(this.player);
         }
         if (jumping) {
             this.player.animations.play('jump');
+            this.jumpFace(this.player);
         }
+    }
+
+    forwardFace(player) {
+        this.noFace(player);
+        player.data.faceForward.visible = true;
+    }
+    jumpFace(player) {
+        this.noFace(player);
+        player.data.faceAction.visible = true;
+    }
+    deadFace(player) {
+        this.noFace(player);
+        player.data.faceDead.visible = true;
+    }
+    noFace(player) {
+        player.data.faceForward.visible = false;
+        player.data.faceAction.visible = false;
+        player.data.faceDead.visible = false;
     }
 
     addPlayer(player, isMainPlayer) {
@@ -72,10 +94,16 @@ class PlayState extends Phaser.State {
         playerSprite.animations.add('jump', [5], 10, true);
 
         // add player face
-        playerSprite.data.face = this.game.add.sprite(0, 0, `${player.name}-forward`);
-        playerSprite.data.face.scale.set(0.2, 0.2);
-        playerSprite.data.face.position.set(-32, -32);
-        playerSprite.addChild(playerSprite.data.face);
+        playerSprite.data.faceForward = this.game.add.sprite(0, 0, `${player.name}-forward`);
+        playerSprite.data.faceAction = this.game.add.sprite(0, 0, `${player.name}-action`);
+        playerSprite.data.faceDead = this.game.add.sprite(0, 0, `${player.name}-dead`);
+        ['faceForward', 'faceAction', 'faceDead'].forEach(function (face) {
+            playerSprite.data[face].scale.set(0.2, 0.2);
+            playerSprite.data[face].position.set(-32, -32);
+            playerSprite.addChild(playerSprite.data[face]);
+            playerSprite.data[face].visible = false;
+        });
+        playerSprite.data.faceForward.visible = true;
 
         if (isMainPlayer) {
             this.player = playerSprite;
