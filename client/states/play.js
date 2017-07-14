@@ -31,6 +31,17 @@ class PlayState extends Phaser.State {
         this.game.physics.p2.convertTiledCollisionObjects(this.map, 'physics_layer');
 
         this.cursors = this.game.input.keyboard.createCursorKeys();
+
+        let resetButton = document.createElement('button');
+        resetButton.classList.add('reset-btn');
+        resetButton.textContent = 'Reset';
+
+        resetButton.addEventListener('click', () => {
+          document.body.removeChild(resetButton);
+          this.game.state.start('PlayerSelectState');
+        });
+
+        document.body.appendChild(resetButton);
     }
     update() {
         let jumping = !this.canJump();
