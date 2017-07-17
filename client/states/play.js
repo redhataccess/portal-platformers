@@ -75,6 +75,13 @@ class PlayState extends Phaser.State {
             this.player.animations.play('jump');
             this.jumpFace(this.player);
         }
+
+        if (this.cursors.down.isDown) {
+            // show death face when holding down key; there is no way to die
+            // yet and this allows us to see the death face
+            this.deadFace(this.player);
+        }
+
     }
 
     forwardFace(player) {
