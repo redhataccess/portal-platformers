@@ -10,9 +10,6 @@ class SplashState extends Phaser.State {
         this.splash = document.querySelector('#splash-screen');
         this.splash.style.display = "block";
 
-        // connect to server
-        this.socketConnect();
-
         // switch to next state after duration elapses
         this.time.events.add(this.duration, this.next, this);
     }
@@ -23,32 +20,5 @@ class SplashState extends Phaser.State {
 
     shutdown() {
         this.splash.style.display = "none";
-    }
-
-    socketConnect() {
-        let socket = this.game.data.socket = io("http://localhost:8080", {query: 'name=' + Date.now()});
-
-        socket.on('connect', function () {
-            console.log("WebSocket connection established and ready.");
-        });
-
-        socket.on('server_message', function (msg) {
-            // console.log(msg);
-        });
-
-        socket.on('client_joined', function (msg) {
-            // console.log(msg);
-        });
-
-        socket.on('client_left', function (msg) {
-            // console.log(msg);
-        });
-
-        function sendString() {
-            let now = Date.now();
-            socket.emit('string_message', 'Date.now() = ' + now);
-        }
-
-        setInterval(sendString, 500);
     }
 }

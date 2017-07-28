@@ -29,6 +29,10 @@ var AppServer = function (io) {
 
         self.io.emit('client_joined', "Client joined: " + name);
 
+        socket.on('player_update', function (playerData) {
+            console.log(playerData);
+        });
+
         socket.on('binary_message', function (msg) {
             var ab = toArrayBuffer(msg);
             var arr = new Int32Array(ab);

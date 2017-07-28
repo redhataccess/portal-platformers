@@ -42,6 +42,8 @@ class PlayState extends Phaser.State {
         });
 
         document.body.appendChild(resetButton);
+
+        this.socketConnect();
     }
     update() {
         let jumping = !this.canJump();
@@ -80,6 +82,8 @@ class PlayState extends Phaser.State {
             this.deadFace(this.player);
         }
 
+
+        this.sendPlayerUpdate();
     }
 
     forwardFace(player) {
@@ -129,6 +133,7 @@ class PlayState extends Phaser.State {
         if (isMainPlayer) {
             window.player = playerSprite;
             this.player = playerSprite;
+            this.player.data.id = Math.random().toPrecision(10);
             this.game.camera.follow(playerSprite);
         }
     }
@@ -155,5 +160,37 @@ class PlayState extends Phaser.State {
 
         return result;
 
+    }
+
+    socketConnect() {
+        this.socket = this.game.data.socket = io("http://localhost:8080", {query: 'name=' + Date.now()});
+
+        this.socket.on('connect', function () {
+            console.log("WebSocket connection established and ready.");
+        });
+
+        this.socket.on('server_message', function (msg) {
+            // console.log(msg);
+        });
+
+        this.socket.on('client_joined', function (msg) {
+            // console.log(msg);
+        });
+
+        this.socket.on('client_left', function (msg) {
+            // console.log(msg);
+        });
+    }
+
+    sendPlayerUpdate() {
+        let playerData = {
+            id: this.player.data.id,
+            position: {
+                x: this.player.position.x,
+                y: this.player.position.y,
+            }
+        };
+
+        this.socket.emit('player_update', playerData);
     }
 }
