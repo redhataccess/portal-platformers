@@ -78,34 +78,49 @@ class PlayState extends Phaser.State {
             }
         }
 
-        if (pressingLeft) {
+        if (pressingDown && pressingLeft) {
+            this.player.scale.x = -2;
+            this.player.body.thrustLeft(moveAmt);
+            this.player.animations.play('crouchwalk');
+            this.crouchFace(this.player);
+
+        } else if (pressingDown && pressingRight) {
+            this.player.scale.x = 2;
+            this.player.body.thrustRight(moveAmt);
+            this.player.animations.play('crouchwalk');
+            this.crouchFace(this.player);
+
+        } else if (pressingLeft) {
             this.player.scale.x = -2;
             this.player.body.thrustLeft(moveAmt);
             this.player.animations.play('walk');
             this.forwardFace(this.player);
-        }
 
-        if (pressingRight) {
+        } else if (pressingRight) {
             this.player.scale.x = 2;
             this.player.body.thrustRight(moveAmt);
             this.player.animations.play('walk');
             this.forwardFace(this.player);
+
+        }
+
+        if (pressingDown && (!pressingRight && !pressingLeft)) {
+            this.player.animations.play('crouch');
+            this.crouchFace(this.player);
+
         }
 
         if (Math.abs(this.player.body.velocity.x) < 0.08){
             this.player.animations.play('idle');
             this.forwardFace(this.player);
         }
+
         if (jumping) {
             this.player.animations.play('jump');
             this.jumpFace(this.player);
         }
 
-        if (pressingDown) {
-            // show death face when holding down key; there is no way to die
-            // yet and this allows us to see the death face
-            this.deadFace(this.player);
-        }
+        
 
         this.sendPlayerUpdate();
 
@@ -127,10 +142,17 @@ class PlayState extends Phaser.State {
         this.noFace(player);
         player.data.faceDead.visible = true;
     }
+    crouchFace(player) {
+        this.noFace(player);
+        player.data.faceCrouch.visible = true;
+        player.data.faceBorder.position.set(-12, -15); // position border over face
+    }
     noFace(player) {
         player.data.faceForward.visible = false;
         player.data.faceAction.visible = false;
         player.data.faceDead.visible = false;
+        player.data.faceCrouch.visible = false;
+        player.data.faceBorder.position.set(-14, -25); // position border over face
     }
 
     addPlayer(player, isMainPlayer) {
@@ -154,20 +176,35 @@ class PlayState extends Phaser.State {
         playerSprite.animations.add('walk', [2,3,4,5,4,3], 10, true);
         playerSprite.animations.add('jump', [6], 10, true);
         playerSprite.animations.add('dead', [8, 9], 10, true);
+        playerSprite.animations.add('crouch', [12], 10, true);
+        playerSprite.animations.add('crouchwalk', [12, 13, 14], 10, true);
 
         // add player face
         playerSprite.data.faceForward = this.game.add.sprite(0, 0, `${player.name}-forward`);
         playerSprite.data.faceAction = this.game.add.sprite(0, 0, `${player.name}-action`);
         playerSprite.data.faceDead = this.game.add.sprite(0, 0, `${player.name}-dead`);
+        playerSprite.data.faceCrouch = this.game.add.sprite(0, 0, `${player.name}-forward`);
+        playerSprite.data.faceBorder = this.game.add.sprite(0, 0, 'player-face-border');
+
         ['faceForward', 'faceAction', 'faceDead'].forEach(function (face) {
-            playerSprite.data[face].position.set(-30, -30.5)
-            playerSprite.data[face].scale.set(0.18, 0.18)
+            playerSprite.data[face].position.set(-30, -30.5);
+            playerSprite.data[face].scale.set(0.18, 0.18);
             playerSprite.addChild(playerSprite.data[face]);
+            
             playerSprite.data[face].visible = false;
         });
-        playerSprite.data.faceBorder = this.game.add.sprite(-30, -30, 'player-face-border');
+
+        ['faceCrouch'].forEach(function (face) {
+            playerSprite.data[face].position.set(-27.5, -20);
+            playerSprite.data[face].scale.set(0.18, 0.18);
+            playerSprite.addChild(playerSprite.data[face]);
+
+            playerSprite.data[face].visible = false;
+        });
+
         playerSprite.data.faceBorder.position.set(-14, -25); // position border over face
         playerSprite.addChild(playerSprite.data.faceBorder);
+
         playerSprite.data.faceForward.visible = true;
 
         if (isMainPlayer) {
