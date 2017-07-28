@@ -49,6 +49,14 @@ class PlayState extends Phaser.State {
         this.socketConnect();
     }
     update() {
+        if (this.player.data.dead) {
+          if (this.player.y + this.player.height / 2 >= this.game.world.height) {
+            this.revive();
+          }
+
+          return;
+        }
+
         let jumping = !this.canJump();
         let moveAmt = jumping ? 100 : 300;
         let pressingLeft = this.cursors.left.isDown
@@ -97,8 +105,12 @@ class PlayState extends Phaser.State {
             this.deadFace(this.player);
         }
 
-
         this.sendPlayerUpdate();
+
+        // check for death
+        if (this.player.y + this.player.height / 2 >= this.game.world.height) {
+          this.killPlayer();
+        }
     }
 
     forwardFace(player) {
@@ -126,9 +138,11 @@ class PlayState extends Phaser.State {
         playerSprite.body.fixedRotation = true;
         playerSprite.body.setRectangle(40, 100, 0, 0); // resize hit box to better reflect mario's actual size on screen
         playerSprite.anchor.setTo(0.5);
+        playerSprite.collideWorldBounds = false;
         playerSprite.animations.add('idle', [0,1], 2, true);
         playerSprite.animations.add('walk', [2,3,4,5], 10, true);
         playerSprite.animations.add('jump', [6], 10, true);
+        playerSprite.animations.add('dead', [8, 9], 10, true);
 
         // add player face
         playerSprite.data.faceForward = this.game.add.sprite(0, 0, `${player.name}-forward`);
@@ -151,6 +165,14 @@ class PlayState extends Phaser.State {
             this.player.data.id = Math.random().toPrecision(10);
             this.game.camera.follow(playerSprite);
         }
+    }
+
+    revive() {
+      this.player.data.dead = false;
+      this.player.body.x = 30;
+      this.player.body.y = 10;
+      this.player.body.velocity.y = 0;
+      this.player.body.velocity.x = 0;
     }
 
     canJump() {
@@ -214,5 +236,14 @@ class PlayState extends Phaser.State {
         };
 
         this.socket.emit('player_update', playerData);
+    }
+
+    killPlayer() {
+      this.player.data.dead = true;
+      console.log('DEAD!!!!');
+
+      this.deadFace(this.player);
+      this.player.animations.play('dead');
+      this.player.body.velocity.y = -400;
     }
 }
