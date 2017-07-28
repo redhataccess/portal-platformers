@@ -129,7 +129,7 @@ class PlayState extends Phaser.State {
         playerSprite.data.faceAction = this.game.add.sprite(0, 0, `${player.name}-action`);
         playerSprite.data.faceDead = this.game.add.sprite(0, 0, `${player.name}-dead`);
         ['faceForward', 'faceAction', 'faceDead'].forEach(function (face) {
-            playerSprite.data[face].position.set(-30, -30)
+            playerSprite.data[face].position.set(-30, -30.5)
             playerSprite.data[face].scale.set(0.18, 0.18)
             playerSprite.addChild(playerSprite.data[face]);
             playerSprite.data[face].visible = false;
