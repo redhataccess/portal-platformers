@@ -37,7 +37,7 @@ if [ -n "$NPM_MIRROR" ]; then
 fi
 
 echo "---> Installing Node application dependencies from source"
-npm install
+npm install --verbose
 
 echo "---> Finished deps install, fixing perms"
 fix-permissions ./
