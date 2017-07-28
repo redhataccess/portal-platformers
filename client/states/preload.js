@@ -11,8 +11,15 @@ class PreloadState extends Phaser.State {
 
         let cacheKey = Phaser.Plugin.Tiled.utils.cacheKey;
 
+        // images and sprites
+
         this.load.spritesheet('player', 'assets/sprites/player-spritesheet.png', 50, 50);
         this.load.image('player-face-border', 'assets/sprites/face-border.png');
+
+        // audio
+
+        this.load.audio('jump', 'assets/sfx/jump.wav');
+        this.load.audio('death', 'assets/sfx/death.wav');
 
         this.load.tiledmap(
             cacheKey('sketchworld', 'tiledmap'),

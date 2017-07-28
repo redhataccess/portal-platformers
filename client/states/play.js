@@ -4,9 +4,12 @@ class PlayState extends Phaser.State {
         console.log(player);
         this.currentPlayer = player;
         this.players = players;
+        window.state = this;
     }
     create() {
         console.log('PlayState create');
+
+        this.createSounds();
 
         // the phaser-tiled plugin requires casting this.game; not normally recommended
         this.map = this.game.add.tiledmap('sketchworld');
@@ -60,6 +63,9 @@ class PlayState extends Phaser.State {
 
         if (pressingUp && !jumping) {
             this.player.body.velocity.y = -400;
+            if (!this.sounds.jump.isPlaying) {
+                this.sounds.jump.play();
+            }
         }
 
         if (pressingLeft) {
@@ -169,6 +175,13 @@ class PlayState extends Phaser.State {
 
         return result;
 
+    }
+
+    createSounds() {
+        this.sounds = {
+            jump: new Phaser.Sound(this.game, 'jump', 0.5),
+            death: new Phaser.Sound(this.game, 'death', 0.5),
+        };
     }
 
     socketConnect() {
