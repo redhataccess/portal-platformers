@@ -352,6 +352,6 @@ class PlayState extends Phaser.State {
 
       this.deadFace(this.player);
       this.player.animations.play('dead');
-      this.player.body.velocity.y = -400;
+      this.player.body.velocity.y = -1000;
     }
 }
