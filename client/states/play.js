@@ -226,7 +226,7 @@ class PlayState extends Phaser.State {
             query: 'id=' + this.currentPlayer.id + '&name=' + this.currentPlayer.name,
         };
 
-        this.socket = this.game.data.socket = io("http://localhost:8080", connectData);
+        this.socket = this.game.data.socket = io("/", connectData);
 
         this.socket.on('connect', function () {
             console.log("[socket] WebSocket connection established and ready.");
