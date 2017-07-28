@@ -274,6 +274,7 @@ class PlayState extends Phaser.State {
         this.sounds = {
             jump: new Phaser.Sound(this.game, 'jump', 0.5),
             death: new Phaser.Sound(this.game, 'death', 0.5),
+            scream: new Phaser.Sound(this.game, 'wilhelm_scream', 0.5),
         };
     }
 
