@@ -48,19 +48,28 @@ class PlayState extends Phaser.State {
     update() {
         let jumping = !this.canJump();
         let moveAmt = jumping ? 100 : 300;
+        let pressingLeft = this.cursors.left.isDown
+            || game.input.keyboard.isDown(Phaser.Keyboard.A)
+        let pressingRight = this.cursors.right.isDown
+            || game.input.keyboard.isDown(Phaser.Keyboard.D)
+        let pressingUp = this.cursors.up.isDown
+            || game.input.keyboard.isDown(Phaser.Keyboard.W)
+            || game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)
+        let pressingDown = this.cursors.down.isDown
+            || game.input.keyboard.isDown(Phaser.Keyboard.S)
 
-        if (this.cursors.up.isDown && !jumping) {
+        if (pressingUp && !jumping) {
             this.player.body.velocity.y = -400;
         }
 
-        if (this.cursors.left.isDown) {
+        if (pressingLeft) {
             this.player.scale.x = -2;
             this.player.body.thrustLeft(moveAmt);
             this.player.animations.play('walk');
             this.forwardFace(this.player);
         }
 
-        if (this.cursors.right.isDown) {
+        if (pressingRight) {
             this.player.scale.x = 2;
             this.player.body.thrustRight(moveAmt);
             this.player.animations.play('walk');
@@ -76,7 +85,7 @@ class PlayState extends Phaser.State {
             this.jumpFace(this.player);
         }
 
-        if (this.cursors.down.isDown) {
+        if (pressingDown) {
             // show death face when holding down key; there is no way to die
             // yet and this allows us to see the death face
             this.deadFace(this.player);
