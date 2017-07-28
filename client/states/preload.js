@@ -20,6 +20,7 @@ class PreloadState extends Phaser.State {
 
         this.load.audio('jump', 'assets/sfx/jump.wav');
         this.load.audio('death', 'assets/sfx/death.wav');
+        this.load.audio('scream', 'assets/sfx/wilhelm_scream.wav');
 
         this.load.tiledmap(
             cacheKey('sketchworld', 'tiledmap'),
@@ -46,4 +47,3 @@ class PreloadState extends Phaser.State {
         this.game.state.start('SplashState');
     }
 }
-
