@@ -60,7 +60,7 @@ class PlayState extends Phaser.State {
         }
 
         let airborne = !this.canJump();
-        let moveAmt = airborne ? 1000 : 2000;
+        let moveAmt = 2000;
         let pressingLeft = this.cursors.left.isDown
             || game.input.keyboard.isDown(Phaser.Keyboard.A)
         let pressingRight = this.cursors.right.isDown
@@ -144,11 +144,12 @@ class PlayState extends Phaser.State {
         this.player.data.airborne = airborne;
 
         // add min/max for x velocity
+        const MAX_VELOCITY = this.player.data.crouching ? 300 : 500;
         if (this.player.body.velocity.x > 0) {
-            this.player.body.velocity.x = Math.min(500, this.player.body.velocity.x);
+            this.player.body.velocity.x = Math.min(MAX_VELOCITY, this.player.body.velocity.x);
         }
         else if (this.player.body.velocity.x < 0) {
-            this.player.body.velocity.x = Math.max(-500, this.player.body.velocity.x);
+            this.player.body.velocity.x = Math.max(-MAX_VELOCITY, this.player.body.velocity.x);
         }
 
         this.sendPlayerUpdate();
