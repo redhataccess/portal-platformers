@@ -92,7 +92,7 @@ var AppServer = function (io) {
         }
     });
 
-    setInterval(this.serverTick, 50);
+    setInterval(this.serverTick, 25);
 };
 
 if (NODEJS) module.exports = AppServer;
