@@ -36,3 +36,12 @@ script tags.  All other ES6 features are fair game.
 
 Currently, external libraries like Phaser and Lodash are from a CDN, just for
 simplicity.
+
+## Docker
+
+You can also use docker to run node/deps
+
+    npm install
+    docker-compose up
+    
+once the platform is up, the code is exported into the container live.
