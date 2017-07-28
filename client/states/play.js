@@ -16,11 +16,11 @@ class PlayState extends Phaser.State {
         // the phaser-tiled plugin requires casting this.game; not normally recommended
         this.map = this.game.add.tiledmap('sketchworld');
         this.game.physics.startSystem(Phaser.Physics.P2JS);
-        this.game.physics.p2.applyDamping = true;
+        this.game.physics.p2.applyDamping = false;
         this.game.physics.p2.applyGravity = true;
-        this.game.physics.p2.gravity.y = 350;
-        this.game.physics.p2.restitution = 0.1;
-        this.game.physics.p2.friction = 0.3;
+        this.game.physics.p2.gravity.y = 1400;
+        this.game.physics.p2.restitution = 0.0;
+        this.game.physics.p2.friction = 0.0;
         this.game.physics.p2.world.setGlobalStiffness(1e5);
         // this.map.addTilesetImage('SuperMarioBros-World1-1', 'tiles');
 
@@ -59,8 +59,8 @@ class PlayState extends Phaser.State {
           return;
         }
 
-        let jumping = !this.canJump();
-        let moveAmt = jumping ? 100 : 300;
+        let airborne = !this.canJump();
+        let moveAmt = airborne ? 1000 : 2000;
         let pressingLeft = this.cursors.left.isDown
             || game.input.keyboard.isDown(Phaser.Keyboard.A)
         let pressingRight = this.cursors.right.isDown
@@ -71,56 +71,77 @@ class PlayState extends Phaser.State {
         let pressingDown = this.cursors.down.isDown
             || game.input.keyboard.isDown(Phaser.Keyboard.S)
 
-        if (pressingUp && !jumping) {
-            this.player.body.velocity.y = -400;
+        if (pressingUp && !airborne) {
+            this.player.body.velocity.y = -700;
             if (!this.sounds.jump.isPlaying) {
                 this.sounds.jump.play();
             }
         }
 
         if (pressingDown && pressingLeft) {
+            moveAmt /= 4;
             this.player.scale.x = -2;
             this.player.body.thrustLeft(moveAmt);
             this.player.animations.play('crouchwalk');
             this.crouchFace(this.player);
-
-        } else if (pressingDown && pressingRight) {
-            this.player.scale.x = 2;
-            this.player.body.thrustRight(moveAmt);
-            this.player.animations.play('crouchwalk');
-            this.crouchFace(this.player);
-
-        } else if (pressingLeft) {
-            this.player.scale.x = -2;
-            this.player.body.thrustLeft(moveAmt);
-            this.player.animations.play('walk');
-            this.forwardFace(this.player);
-
-        } else if (pressingRight) {
-            this.player.scale.x = 2;
-            this.player.body.thrustRight(moveAmt);
-            this.player.animations.play('walk');
-            this.forwardFace(this.player);
 
         }
+        else if (pressingDown && pressingRight) {
+            moveAmt /= 4;
+            this.player.scale.x = 2;
+            this.player.body.thrustRight(moveAmt);
+            this.player.animations.play('crouchwalk');
+            this.crouchFace(this.player);
 
-        if (pressingDown && (!pressingRight && !pressingLeft)) {
+        }
+        else if (pressingDown) {
             this.player.animations.play('crouch');
             this.crouchFace(this.player);
+        }
+        else if (pressingLeft) {
+            this.player.scale.x = -2;
+            // change direction quickly
+            if (this.player.body.velocity.x > 0) {
+                moveAmt *= 4;
+            }
+            this.player.body.thrustLeft(moveAmt);
+            this.player.animations.play('walk');
+            this.forwardFace(this.player);
 
         }
+        else if (pressingRight) {
+            this.player.scale.x = 2;
+            // change direction quickly
+            if (this.player.body.velocity.x < 0) {
+                moveAmt *= 4;
+            }
+            this.player.body.thrustRight(moveAmt);
+            this.player.animations.play('walk');
+            this.forwardFace(this.player);
 
-        if (Math.abs(this.player.body.velocity.x) < 0.08){
+        }
+        else if (!pressingDown && Math.abs(this.player.body.velocity.x) < 2.00){
             this.player.animations.play('idle');
             this.forwardFace(this.player);
         }
+        else {
+            // not holding any movement keys
+            this.player.body.velocity.x *= 0.90;
 
-        if (jumping) {
+        }
+
+        if (airborne) {
             this.player.animations.play('jump');
             this.jumpFace(this.player);
         }
 
-        
+        // add min/max for x velocity
+        if (this.player.body.velocity.x > 0) {
+            this.player.body.velocity.x = Math.min(500, this.player.body.velocity.x);
+        }
+        else if (this.player.body.velocity.x < 0) {
+            this.player.body.velocity.x = Math.max(-500, this.player.body.velocity.x);
+        }
 
         this.sendPlayerUpdate();
 
@@ -190,7 +211,7 @@ class PlayState extends Phaser.State {
             playerSprite.data[face].position.set(-30, -30.5);
             playerSprite.data[face].scale.set(0.18, 0.18);
             playerSprite.addChild(playerSprite.data[face]);
-            
+
             playerSprite.data[face].visible = false;
         });
 
