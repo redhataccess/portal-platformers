@@ -179,6 +179,7 @@ class PlayState extends Phaser.State {
         this.noFace(player);
         player.data.faceCrouch.visible = true;
         player.data.faceBorder.position.set(-12, -15); // position border over face
+        player.data.crouching = true;
     }
     noFace(player) {
         player.data.faceForward.visible = false;
@@ -187,6 +188,7 @@ class PlayState extends Phaser.State {
         player.data.faceCrouch.visible = false;
         player.data.faceBorder.position.set(-14, -25); // position border over face
         player.data.face = 'none';
+        player.data.crouching = false;
     }
 
 
@@ -407,5 +409,6 @@ class PlayState extends Phaser.State {
       this.deadFace(this.player);
       this.player.animations.play('dead');
       this.player.body.velocity.y = -1000;
+      this.sounds.death.play();
     }
 }
