@@ -151,7 +151,7 @@ class PlayState extends Phaser.State {
         playerSprite.anchor.setTo(0.5);
         playerSprite.collideWorldBounds = false;
         playerSprite.animations.add('idle', [0,1], 2, true);
-        playerSprite.animations.add('walk', [2,3,4,5], 10, true);
+        playerSprite.animations.add('walk', [2,3,4,5,4,3], 10, true);
         playerSprite.animations.add('jump', [6], 10, true);
         playerSprite.animations.add('dead', [8, 9], 10, true);
 
