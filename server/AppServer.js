@@ -9,28 +9,46 @@ var AppServer = function (io) {
     //  Scope.
     var self = this;
 
+    self.players = {};
+    self.sockets = {};
+
     self.io = io;
 
-    // Example state
-    var updateCount = 0;
-
-    setInterval(function () {
-        // send to all clients
-        self.io.emit('server_message', ++updateCount);
-    }, 100);
+    self.serverTick = function appServerTick() {
+        self.io.emit("server_tick", self.players);
+    };
 
     self.io.on('connection', function (socket) {
 
         console.log('Client connected headers:', JSON.stringify(socket.handshake));
 
-        var name = socket.handshake.query.name;
+        var playerId = socket.handshake.query.id;
+        var playerName = socket.handshake.query.name;
 
-        console.log("Name:", name);
+        // create the player
+        var player = {
+            id: playerId,
+            name: playerName,
+            position:  {
+                x: 0,
+                y: 0
+            }
+        };
 
-        self.io.emit('client_joined', "Client joined: " + name);
+        // Add player to list of players
+        self.players[playerId] = player;
+
+        console.log("Player joined:", playerId, playerName);
+
+        socket.emit("welcome", self.players);
+
+        self.io.emit('player_joined', player);
 
         socket.on('player_update', function (playerData) {
-            console.log(playerData);
+            if (self.players[playerData.id]) {
+                self.players[playerData.id].position.x = playerData.position.x;
+                self.players[playerData.id].position.y = playerData.position.y;
+            }
         });
 
         socket.on('binary_message', function (msg) {
@@ -44,7 +62,8 @@ var AppServer = function (io) {
         });
 
         socket.on('disconnect', function () {
-            self.io.emit('client_left', "Client left: " + name);
+            self.io.emit('player_left', playerId);
+            delete self.players[playerId];
             console.log('Client connection closed');
         });
 
@@ -57,6 +76,8 @@ var AppServer = function (io) {
             return ab;
         }
     });
+
+    setInterval(this.serverTick, 50);
 };
 
 if (NODEJS) module.exports = AppServer;

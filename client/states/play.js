@@ -3,8 +3,10 @@ class PlayState extends Phaser.State {
         console.log('player is');
         console.log(player);
         this.currentPlayer = player;
+        this.currentPlayer.id = Math.random().toPrecision(10);
         this.players = players;
         window.state = this;
+        this.playerSprites = {};
     }
     create() {
         console.log('PlayState create');
@@ -133,10 +135,19 @@ class PlayState extends Phaser.State {
 
     addPlayer(player, isMainPlayer) {
         const playerSprite = this.game.add.sprite(30, 10, 'player');
+        playerSprite.data.id = player.id;
+        if (player.position) {
+            playerSprite.position.set(player.position.x, player.position.y);
+        };
         playerSprite.scale.set(2, 2);
-        this.game.physics.p2.enable(playerSprite);
-        playerSprite.body.fixedRotation = true;
-        playerSprite.body.setRectangle(40, 100, 0, 0); // resize hit box to better reflect mario's actual size on screen
+
+        // only enable physics for main player
+        if (isMainPlayer) {
+            this.game.physics.p2.enable(playerSprite);
+            playerSprite.body.fixedRotation = true;
+            playerSprite.body.setRectangle(40, 100, 0, 0); // resize hit box to better reflect mario's actual size on screen
+        }
+
         playerSprite.anchor.setTo(0.5);
         playerSprite.collideWorldBounds = false;
         playerSprite.animations.add('idle', [0,1], 2, true);
@@ -162,9 +173,11 @@ class PlayState extends Phaser.State {
         if (isMainPlayer) {
             window.player = playerSprite;
             this.player = playerSprite;
-            this.player.data.id = Math.random().toPrecision(10);
             this.game.camera.follow(playerSprite);
         }
+
+        // Add this sprite to list of current players
+        this.playerSprites[player.id] = playerSprite;
     }
 
     revive() {
@@ -207,22 +220,59 @@ class PlayState extends Phaser.State {
     }
 
     socketConnect() {
-        this.socket = this.game.data.socket = io("http://localhost:8080", {query: 'name=' + Date.now()});
+        var self = this;
+
+        let connectData = {
+            query: 'id=' + this.currentPlayer.id + '&name=' + this.currentPlayer.name,
+        };
+
+        this.socket = this.game.data.socket = io("http://localhost:8080", connectData);
 
         this.socket.on('connect', function () {
-            console.log("WebSocket connection established and ready.");
+            console.log("[socket] WebSocket connection established and ready.");
         });
 
-        this.socket.on('server_message', function (msg) {
-            // console.log(msg);
+        this.socket.on('welcome', function (players) {
+            console.log("[socket] Welcome to the game! Number of players: ", Object.keys(players).length);
+
+            // Add all the other players currently in the game
+            for (let playerId in players) {
+                if (players.hasOwnProperty(playerId)) {
+                    let otherPlayer = players[playerId];
+                    if (self.currentPlayer.id != otherPlayer.id) {
+                        self.addPlayer(otherPlayer, false);
+                    }
+                }
+            }
         });
 
-        this.socket.on('client_joined', function (msg) {
-            // console.log(msg);
+        this.socket.on('player_joined', function (player) {
+            console.log('[socket] Player joined: ', player);
+
+            // New Player joined
+            if (self.currentPlayer.id != player.id) {
+                self.addPlayer(player, false);
+            }
         });
 
-        this.socket.on('client_left', function (msg) {
-            // console.log(msg);
+        this.socket.on('server_tick', function (players) {
+            // update the players positions
+            for (let playerId in players) {
+                if (players.hasOwnProperty(playerId)) {
+                    let otherPlayer = players[playerId];
+                    if (self.currentPlayer.id != otherPlayer.id) {
+                        let playerSprite = self.playerSprites[playerId];
+                        playerSprite.position.set(otherPlayer.position.x, otherPlayer.position.y);
+                    }
+                }
+            }
+        });
+
+        this.socket.on('player_left', function (playerId) {
+            let playerSprite = self.playerSprites[playerId];
+            playerSprite.destroy(true);
+            delete self.playerSprites[playerId];
+
         });
     }
 
