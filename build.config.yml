@@ -1,0 +1,48 @@
+apiVersion: v1
+kind: BuildConfig
+metadata:
+  name: portal-platformer-app
+  namespace: portal-platformers
+  selfLink: /oapi/v1/namespaces/portal-platformers/buildconfigs/portal-platformer-app
+  uid: b605b4ef-7397-11e7-96f5-02a55ffb157d
+  resourceVersion: '132717187'
+  creationTimestamp: '2017-07-28T13:21:48Z'
+  labels:
+    app: portal-platformer-app
+  annotations:
+    openshift.io/generated-by: OpenShiftWebConsole
+spec:
+  triggers:
+    - type: Generic
+      generic:
+        secret: 9d0061058e275d91
+    - type: GitHub
+      github:
+        secret: e83840c7d2de5f5f
+    - type: ImageChange
+      imageChange:
+        lastTriggeredImageID: >-
+          registry.access.redhat.com/rhscl/nodejs-6-rhel7@sha256:b6e89ef453af578cb85c859396af92f9912a0544d6564a2d4b3546c7d63893a0
+    - type: ConfigChange
+  runPolicy: Serial
+  source:
+    type: Git
+    git:
+      uri: 'https://github.com/redhataccess/portal-platformers.git'
+      ref: feature/jassmith/dockerify
+  strategy:
+    type: Source
+    sourceStrategy:
+      from:
+        kind: ImageStreamTag
+        namespace: openshift
+        name: 'nodejs:6'
+  output:
+    to:
+      kind: ImageStreamTag
+      name: 'portal-platformer-app:latest'
+  resources: {}
+  postCommit: {}
+  nodeSelector: null
+status:
+  lastVersion: 2
