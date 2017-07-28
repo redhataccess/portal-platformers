@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server/server.js",
-    "build": "babel src --out-dir build --copy-files --presets=env"
+    "build": "babel client --out-dir build --copy-files --presets=env --ignore=node_modules && cp -r node_modules build"
   },
   "author": "",
   "license": "GPL-3.0",
