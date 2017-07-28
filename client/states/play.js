@@ -106,6 +106,7 @@ class PlayState extends Phaser.State {
             }
             this.player.body.thrustLeft(moveAmt);
             this.player.animations.play('walk');
+            this.player.data.walking = true;
             this.forwardFace(this.player);
 
         }
@@ -117,13 +118,18 @@ class PlayState extends Phaser.State {
             }
             this.player.body.thrustRight(moveAmt);
             this.player.animations.play('walk');
+            this.player.data.walking = true;
             this.forwardFace(this.player);
 
         }
         else if (!pressingDown && Math.abs(this.player.body.velocity.x) < 2.00){
             this.player.animations.play('idle');
+            this.player.data.idle = true;
+            this.player.data.walking = false;
+            this.player.data.jumping = false;
             this.forwardFace(this.player);
         }
+
         else {
             // not holding any movement keys
             this.player.body.velocity.x *= 0.90;
@@ -134,6 +140,8 @@ class PlayState extends Phaser.State {
             this.player.animations.play('jump');
             this.jumpFace(this.player);
         }
+
+        this.player.data.airborne = airborne;
 
         // add min/max for x velocity
         if (this.player.body.velocity.x > 0) {
@@ -154,14 +162,17 @@ class PlayState extends Phaser.State {
     forwardFace(player) {
         this.noFace(player);
         player.data.faceForward.visible = true;
+        player.data.face = 'forward';
     }
     jumpFace(player) {
         this.noFace(player);
         player.data.faceAction.visible = true;
+        player.data.face = 'jump';
     }
     deadFace(player) {
         this.noFace(player);
         player.data.faceDead.visible = true;
+        player.data.face = 'dead';
     }
     crouchFace(player) {
         this.noFace(player);
@@ -174,7 +185,9 @@ class PlayState extends Phaser.State {
         player.data.faceDead.visible = false;
         player.data.faceCrouch.visible = false;
         player.data.faceBorder.position.set(-14, -25); // position border over face
+        player.data.face = 'none';
     }
+
 
     addPlayer(player, isMainPlayer) {
         const playerSprite = this.game.add.sprite(30, 10, 'player');
@@ -322,6 +335,37 @@ class PlayState extends Phaser.State {
                     if (self.currentPlayer.id != otherPlayer.id) {
                         let playerSprite = self.playerSprites[playerId];
                         playerSprite.position.set(otherPlayer.position.x, otherPlayer.position.y);
+                        playerSprite.scale.set(otherPlayer.scale.x, otherPlayer.scale.y);
+
+                        if (otherPlayer.airborne) {
+                            playerSprite.animations.play('jump');
+                        }
+                        else if (otherPlayer.walking) {
+                            playerSprite.animations.play('walk');
+                        }
+                        else if (otherPlayer.idle) {
+                            playerSprite.animations.play('idle');
+                        }
+
+                        // set the face if it's different
+                        if (playerSprite.data.face !== otherPlayer.face) {
+                            switch (otherPlayer.face) {
+                                case 'forward':
+                                    self.forwardFace(playerSprite);
+                                    break;
+                                case 'jump':
+                                    self.jumpFace(playerSprite);
+                                    break;
+                                case 'dead':
+                                    self.deadFace(playerSprite);
+                                    break;
+                                case 'none':
+                                    self.noFace(playerSprite);
+                                    break;
+                                default:
+                                    self.noFace(playerSprite);
+                            }
+                        }
                     }
                 }
             }
@@ -341,7 +385,15 @@ class PlayState extends Phaser.State {
             position: {
                 x: this.player.position.x,
                 y: this.player.position.y,
-            }
+            },
+            scale: {
+                x: this.player.scale.x,
+                y: this.player.scale.y,
+            },
+            face: this.player.data.face,
+            airborne: this.player.data.airborne,
+            walking: this.player.data.walking,
+            idle: this.player.data.idle,
         };
 
         this.socket.emit('player_update', playerData);

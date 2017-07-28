@@ -29,10 +29,18 @@ var AppServer = function (io) {
         var player = {
             id: playerId,
             name: playerName,
+            face: 'none',
             position:  {
                 x: 0,
                 y: 0
-            }
+            },
+            scale:  {
+                x: 0,
+                y: 0
+            },
+            airborne: false,
+            walking: false,
+            idle: true,
         };
 
         // Add player to list of players
@@ -45,9 +53,16 @@ var AppServer = function (io) {
         self.io.emit('player_joined', player);
 
         socket.on('player_update', function (playerData) {
-            if (self.players[playerData.id]) {
-                self.players[playerData.id].position.x = playerData.position.x;
-                self.players[playerData.id].position.y = playerData.position.y;
+            var thePlayer = self.players[playerData.id];
+            if (thePlayer) {
+                thePlayer.position.x = playerData.position.x;
+                thePlayer.position.y = playerData.position.y;
+                thePlayer.scale.x = playerData.scale.x;
+                thePlayer.scale.y = playerData.scale.y;
+                thePlayer.face = playerData.face;
+                thePlayer.airborne = playerData.airborne;
+                thePlayer.walking = playerData.walking;
+                thePlayer.idle = playerData.idle;
             }
         });
 
