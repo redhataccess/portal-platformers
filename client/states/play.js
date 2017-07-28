@@ -37,7 +37,8 @@ class PlayState extends Phaser.State {
         resetButton.textContent = 'Restart';
 
         resetButton.addEventListener('click', () => {
-          window.location.reload();
+          document.body.removeChild(resetButton);
+          this.game.state.start('PlayerSelectState', true);
         });
 
         document.body.appendChild(resetButton);
