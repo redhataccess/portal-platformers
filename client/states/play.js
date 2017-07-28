@@ -66,8 +66,6 @@ class PlayState extends Phaser.State {
         }
 
         if (Math.abs(this.player.body.velocity.x) < 0.08){
-            this.player.animations.stop();
-            this.player.frame = 0;
             this.player.animations.play('idle');
             this.forwardFace(this.player);
         }
@@ -109,7 +107,7 @@ class PlayState extends Phaser.State {
         playerSprite.body.fixedRotation = true;
         playerSprite.body.setRectangle(40, 100, 0, 0); // resize hit box to better reflect mario's actual size on screen
         playerSprite.anchor.setTo(0.5);
-        playerSprite.animations.add('idle', [0,1], 10, true);
+        playerSprite.animations.add('idle', [0,1], 2, true);
         playerSprite.animations.add('walk', [2,3,4,5], 10, true);
         playerSprite.animations.add('jump', [6], 10, true);
 
