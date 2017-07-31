@@ -180,6 +180,7 @@ class PlayState extends Phaser.State {
         player.data.faceCrouch.visible = true;
         player.data.faceBorder.position.set(-12, -15); // position border over face
         player.data.crouching = true;
+        player.data.face = 'crouch';
     }
     noFace(player) {
         player.data.faceForward.visible = false;
@@ -314,7 +315,7 @@ class PlayState extends Phaser.State {
             for (let playerId in players) {
                 if (players.hasOwnProperty(playerId)) {
                     let otherPlayer = players[playerId];
-                    if (self.currentPlayer.id != otherPlayer.id) {
+                    if (self.currentPlayer.id !== otherPlayer.id) {
                         self.addPlayer(otherPlayer, false);
                     }
                 }
@@ -325,7 +326,7 @@ class PlayState extends Phaser.State {
             console.log('[socket] Player joined: ', player);
 
             // New Player joined
-            if (self.currentPlayer.id != player.id) {
+            if (self.currentPlayer.id !== player.id) {
                 self.addPlayer(player, false);
             }
         });
@@ -335,13 +336,19 @@ class PlayState extends Phaser.State {
             for (let playerId in players) {
                 if (players.hasOwnProperty(playerId)) {
                     let otherPlayer = players[playerId];
-                    if (self.currentPlayer.id != otherPlayer.id) {
+                    if (self.currentPlayer.id !== otherPlayer.id) {
                         let playerSprite = self.playerSprites[playerId];
                         playerSprite.position.set(otherPlayer.position.x, otherPlayer.position.y);
                         playerSprite.scale.set(otherPlayer.scale.x, otherPlayer.scale.y);
 
                         if (otherPlayer.airborne) {
                             playerSprite.animations.play('jump');
+                        }
+                        else if (otherPlayer.crouching && otherPlayer.walking) {
+                            playerSprite.animations.play('crouchwalk');
+                        }
+                        else if (otherPlayer.crouching) {
+                            playerSprite.animations.play('crouch');
                         }
                         else if (otherPlayer.walking) {
                             playerSprite.animations.play('walk');
@@ -361,6 +368,9 @@ class PlayState extends Phaser.State {
                                     break;
                                 case 'dead':
                                     self.deadFace(playerSprite);
+                                    break;
+                                case 'crouch':
+                                    self.crouchFace(playerSprite);
                                     break;
                                 case 'none':
                                     self.noFace(playerSprite);
@@ -395,6 +405,7 @@ class PlayState extends Phaser.State {
             },
             face: this.player.data.face,
             airborne: this.player.data.airborne,
+            crouching: this.player.data.crouching,
             walking: this.player.data.walking,
             idle: this.player.data.idle,
         };

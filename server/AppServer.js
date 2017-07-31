@@ -61,6 +61,7 @@ const AppServer = function (io) {
                 thePlayer.scale.y = playerData.scale.y;
                 thePlayer.face = playerData.face;
                 thePlayer.airborne = playerData.airborne;
+                thePlayer.crouching = playerData.crouching;
                 thePlayer.walking = playerData.walking;
                 thePlayer.idle = playerData.idle;
             }
