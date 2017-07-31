@@ -1,8 +1,8 @@
 #!/bin/env node
 //  Sample Node.js WebSocket Client-Server application
-var http            = require('http');
-var express         = require('express');
-var AppServer       = require('./AppServer.js');
+const http = require('http');
+const express = require('express');
+const AppServer = require('./AppServer.js');
 
 // Patch console.x methods in order to add timestamp information
 require("console-stamp")(console, {pattern: "mm/dd/yyyy HH:MM:ss.l"});
@@ -10,10 +10,10 @@ require("console-stamp")(console, {pattern: "mm/dd/yyyy HH:MM:ss.l"});
 /**
  *  Define the sample server.
  */
-var MainServer = function () {
+const MainServer = function () {
 
     //  Scope.
-    var self = this;
+    const self = this;
 
 
     /*  ================================================================  */
@@ -47,12 +47,16 @@ var MainServer = function () {
      */
     self.setupTerminationHandlers = function () {
         //  Process on exit and signals.
-        process.on('exit', function() { self.terminator(0); });
+        process.on('exit', function () {
+            self.terminator(0);
+        });
 
         ['SIGHUP', 'SIGINT', 'SIGQUIT', 'SIGILL', 'SIGTRAP', 'SIGABRT',
-         'SIGBUS', 'SIGFPE', 'SIGUSR1', 'SIGSEGV', 'SIGUSR2', 'SIGTERM'
-        ].forEach(function(element) {
-            process.on(element, function() { self.terminator(element); });
+            'SIGBUS', 'SIGFPE', 'SIGUSR1', 'SIGSEGV', 'SIGUSR2', 'SIGTERM'
+        ].forEach(function (element) {
+            process.on(element, function () {
+                self.terminator(element);
+            });
         });
     };
 
@@ -91,7 +95,7 @@ var MainServer = function () {
         self.app.use(express.static(__dirname + '/../' + (process.argv[2] || 'client')));
 
         //  Add handlers for the app (from the routes).
-        for (var r in self.routes) {
+        for (let r in self.routes) {
             if (self.routes.hasOwnProperty(r)) {
                 self.app.get(r, self.routes[r]);
             }
@@ -126,7 +130,7 @@ var MainServer = function () {
 /**
  *  main():  Main code.
  */
-var mainServer = new MainServer();
+const mainServer = new MainServer();
 mainServer.initialize();
 mainServer.start();
 

@@ -5,9 +5,9 @@ const NODEJS = typeof module !== 'undefined' && module.exports;
  * @param io
  * @constructor
  */
-var AppServer = function (io) {
+const AppServer = function (io) {
     //  Scope.
-    var self = this;
+    const self = this;
 
     self.players = {};
     self.sockets = {};
@@ -22,19 +22,19 @@ var AppServer = function (io) {
 
         console.log('Client connected headers:', JSON.stringify(socket.handshake));
 
-        var playerId = socket.handshake.query.id;
-        var playerName = socket.handshake.query.name;
+        const playerId = socket.handshake.query.id;
+        const playerName = socket.handshake.query.name;
 
         // create the player
-        var player = {
+        const player = {
             id: playerId,
             name: playerName,
             face: 'none',
-            position:  {
+            position: {
                 x: 0,
                 y: 0
             },
-            scale:  {
+            scale: {
                 x: 0,
                 y: 0
             },
@@ -53,7 +53,7 @@ var AppServer = function (io) {
         self.io.emit('player_joined', player);
 
         socket.on('player_update', function (playerData) {
-            var thePlayer = self.players[playerData.id];
+            const thePlayer = self.players[playerData.id];
             if (thePlayer) {
                 thePlayer.position.x = playerData.position.x;
                 thePlayer.position.y = playerData.position.y;
@@ -67,8 +67,8 @@ var AppServer = function (io) {
         });
 
         socket.on('binary_message', function (msg) {
-            var ab = toArrayBuffer(msg);
-            var arr = new Int32Array(ab);
+            const ab = toArrayBuffer(msg);
+            const arr = new Int32Array(ab);
             console.log(arr[0]);
         });
 
@@ -83,9 +83,9 @@ var AppServer = function (io) {
         });
 
         function toArrayBuffer(buffer) {
-            var ab = new ArrayBuffer(buffer.length);
-            var view = new Uint8Array(ab);
-            for (var i = 0; i < buffer.length; ++i) {
+            const ab = new ArrayBuffer(buffer.length);
+            const view = new Uint8Array(ab);
+            for (let i = 0; i < buffer.length; ++i) {
                 view[i] = buffer[i];
             }
             return ab;
