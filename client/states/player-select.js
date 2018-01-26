@@ -4,6 +4,10 @@ class PlayerSelectState extends Phaser.State {
         this.players = [];
         this.template = null;
         this.loading = false;
+
+        if (Game.config.skipFirebase) {
+            this.next(game.cache.getJSON('test-player'));
+        }
     }
 
     create() {

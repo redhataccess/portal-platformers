@@ -33,7 +33,7 @@ class PlayState extends Phaser.State {
         // this.game.physics.arcade.collide(this.player, this.layer);
 
         // the phaser-tiled plugin requires casting this.game; not normally recommended
-        this.game.physics.p2.convertTiledCollisionObjects(this.map, 'physics_layer');
+        this.game.physics.p2.convertTiledCollisionObjects(this.map, 'pune_physics');
 
         this.cursors = this.game.input.keyboard.createCursorKeys();
 
@@ -74,7 +74,7 @@ class PlayState extends Phaser.State {
             || game.input.keyboard.isDown(Phaser.Keyboard.S)
 
         if (pressingUp && !airborne) {
-            this.player.body.velocity.y = -700;
+            this.player.body.velocity.y = -1400;
             if (!this.sounds.jump.isPlaying) {
                 this.sounds.jump.play();
             }
@@ -293,7 +293,7 @@ class PlayState extends Phaser.State {
         this.sounds = {
             jump: new Phaser.Sound(this.game, 'jump', 0.5),
             death: new Phaser.Sound(this.game, 'death', 0.5),
-            scream: new Phaser.Sound(this.game, 'wilhelm_scream', 0.5),
+            // scream: new Phaser.Sound(this.game, 'wilhelm_scream', 0.5),
         };
     }
 
@@ -431,6 +431,6 @@ class PlayState extends Phaser.State {
         this.player.body.velocity.y = -1000;
         this.player.body.velocity.x = 0;
         this.sounds.death.play();
-        this.sounds.scream.play();
+        // this.sounds.scream.play();
     }
 }

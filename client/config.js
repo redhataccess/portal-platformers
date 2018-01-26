@@ -1,6 +1,7 @@
 Game.config = {
+    skipFirebase: true,
     splash: {
         fontSize: 44,
-        duration: 2000
+        duration: 20
     }
 };

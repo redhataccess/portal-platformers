@@ -30,12 +30,16 @@ class PreloadState extends Phaser.State {
             Phaser.Tilemap.TILED_JSON
         );
         // load the bg images from the Tiled map
-        this.load.image('sketchworld_layer_pune', 'assets/maps/sketchworld/out.jpg');
+        this.load.image('sketchworld_layer_pune-1', 'assets/maps/sketchworld/pune-1.jpg');
+        this.load.image('sketchworld_layer_pune-2', 'assets/maps/sketchworld/pune-2.jpg');
 
         this.load.image(
             cacheKey('sketchworld', 'tileset', 'sketchworld'),
             'assets/maps/sketchworld/sketchworld.png'
         );
+
+        // load test player to avoid firebase lag
+        this.load.json('test-player', 'data/player.json');
 
         this.cache.getJSON('players').forEach((player) => {
             this.load.image(player.name, player.face);
