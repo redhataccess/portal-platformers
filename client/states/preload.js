@@ -22,12 +22,15 @@ class PreloadState extends Phaser.State {
         this.load.audio('death', 'assets/sfx/death.wav');
         this.load.audio('scream', 'assets/sfx/wilhelm_scream.wav');
 
+        // load the map from Tiled
         this.load.tiledmap(
             cacheKey('sketchworld', 'tiledmap'),
-            'assets/maps/sketchworld/sketchworld.json',
+            'assets/maps/sketchworld/sketchworld-pune.json',
             null,
             Phaser.Tilemap.TILED_JSON
         );
+        // load the bg images from the Tiled map
+        this.load.image('sketchworld_layer_pune', 'assets/maps/sketchworld/out.jpg');
 
         this.load.image(
             cacheKey('sketchworld', 'tileset', 'sketchworld'),
