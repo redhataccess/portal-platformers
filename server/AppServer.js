@@ -64,6 +64,7 @@ const AppServer = function (io) {
                 thePlayer.crouching = playerData.crouching;
                 thePlayer.walking = playerData.walking;
                 thePlayer.idle = playerData.idle;
+                thePlayer.dead = playerData.dead;
             }
         });
 

@@ -56,6 +56,8 @@ class PlayState extends Phaser.State {
             this.revive();
           }
 
+          this.sendPlayerUpdate();
+
           return;
         }
 
@@ -152,12 +154,12 @@ class PlayState extends Phaser.State {
             this.player.body.velocity.x = Math.max(-MAX_VELOCITY, this.player.body.velocity.x);
         }
 
-        this.sendPlayerUpdate();
-
         // check for death
         if (this.player.y + this.player.height / 2 >= this.game.world.height) {
           this.killPlayer();
         }
+
+        this.sendPlayerUpdate();
     }
 
     forwardFace(player) {
@@ -357,6 +359,12 @@ class PlayState extends Phaser.State {
                             playerSprite.animations.play('idle');
                         }
 
+
+                        if (otherPlayer.dead) {
+                            console.log('Other player is dead!!');
+                            playerSprite.animations.play('dead');
+                        }
+
                         // set the face if it's different
                         if (playerSprite.data.face !== otherPlayer.face) {
                             switch (otherPlayer.face) {
@@ -408,20 +416,21 @@ class PlayState extends Phaser.State {
             crouching: this.player.data.crouching,
             walking: this.player.data.walking,
             idle: this.player.data.idle,
+            dead: this.player.data.dead,
         };
 
         this.socket.emit('player_update', playerData);
     }
 
     killPlayer() {
-      this.player.data.dead = true;
-      console.log('DEAD!!!!');
+        this.player.data.dead = true;
+        console.log('DEAD!!!!');
 
-      this.deadFace(this.player);
-      this.player.animations.play('dead');
-      this.player.body.velocity.y = -1000;
-      this.player.body.velocity.x = 0;
-      this.sounds.death.play();
-      this.sounds.scream.play();
+        this.deadFace(this.player);
+        this.player.animations.play('dead');
+        this.player.body.velocity.y = -1000;
+        this.player.body.velocity.x = 0;
+        this.sounds.death.play();
+        this.sounds.scream.play();
     }
 }
