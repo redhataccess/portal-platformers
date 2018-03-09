@@ -16,6 +16,7 @@ class PlayState extends Phaser.State {
         this.gamePlayMusic = game.add.audio('gamePlayMusic');
         this.gamePlayMusic.play();
         this.gamePlayMusic.volume = .1;
+        this.gamePlayMusic.loop = true;
 
         // the phaser-tiled plugin requires casting this.game; not normally recommended
         this.map = this.game.add.tiledmap('sketchworld');
@@ -91,7 +92,9 @@ class PlayState extends Phaser.State {
             this.player.body.thrustLeft(moveAmt);
             this.player.animations.play('crouchwalk');
             this.crouchFace(this.player);
-
+            if (!this.sounds.skid.isPlaying) {
+                this.sounds.skid.play();
+            }
         }
         else if (pressingDown && pressingRight) {
             moveAmt /= 4;
@@ -99,7 +102,9 @@ class PlayState extends Phaser.State {
             this.player.body.thrustRight(moveAmt);
             this.player.animations.play('crouchwalk');
             this.crouchFace(this.player);
-
+            if (!this.sounds.skid.isPlaying) {
+                this.sounds.skid.play();
+            }
         }
         else if (pressingDown) {
             this.player.animations.play('crouch');
@@ -299,6 +304,7 @@ class PlayState extends Phaser.State {
             jump: new Phaser.Sound(this.game, 'jump', .05),
             death: new Phaser.Sound(this.game, 'death', 1),
             scream: new Phaser.Sound(this.game, 'wilhelm_scream', 1),
+            skid: new Phaser.Sound(this.game, 'skid', 1),
         };
     }
 
