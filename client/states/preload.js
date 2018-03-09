@@ -49,10 +49,6 @@ class PreloadState extends Phaser.State {
 
         // load test player to avoid firebase lag
         this.load.json('test-player', 'data/player.json');
-
-        this.cache.getJSON('players').forEach((player) => {
-            this.load.image(player.name, player.face);
-        });
     }
 
     create() {
