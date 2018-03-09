@@ -16,6 +16,8 @@ class PreloadState extends Phaser.State {
         this.load.spritesheet('player', 'assets/sprites/player-spritesheet.png', 50, 50);
         this.load.image('player-face-border', 'assets/sprites/face-border.png');
 
+        this.load.image('fedora', 'assets/sprites/fedora.png');
+
         // audio
 
         this.load.audio('jump', 'assets/sfx/jump.wav');
