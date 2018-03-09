@@ -25,7 +25,7 @@ class PlayState extends Phaser.State {
         this.game.physics.p2.applyGravity = true;
         this.game.physics.p2.gravity.y = 1400;
         this.game.physics.p2.restitution = 0.0;
-        this.game.physics.p2.friction = 0.0;
+        this.game.physics.p2.friction = 0.2;
         this.game.physics.p2.world.setGlobalStiffness(1e5);
         // this.map.addTilesetImage('SuperMarioBros-World1-1', 'tiles');
 
