@@ -70,6 +70,7 @@
             }
 
             #player-select ul {
+              margin: 20px 0;
               padding: 0;
               display: flex;
               flex-direction: column;
@@ -77,79 +78,111 @@
               align-items: center;
             }
 
+            #player-select ul,
+            #player-select ul * {
+              box-sizing: border-box;
+            }
+
             #player-select ul li {
               list-style-type: none;
-              margin-top: 3%;
-              width: 65%;
-              cursor: pointer;
+              margin: 0;
+              width: calc(65% - 2px);
+              cursor: url(assets/img/old-school-cursor.png), auto;
+              padding: 10px;
+              border-radius: 3px;
+              background: transparent;
+            }
+
+            #player-select ul li:last-child {
+              border-right: 0;
             }
 
             #player-select ul li img {
               max-width: 85%;
+              opacity: .6;
             }
+
+            #player-select ul li:hover img {
+              /* background: #00b9e4;*/
+              opacity: 1;
+            }
+
+            #player-select ul li[data-index="14"] img {
+                display: none; /* temp */
+            }
+
 
             #player-select ul li h2 {
               font-size: 1em;
+              margin: 0;
+              font-weight: 500;
             }
 
             .add-player {
               display: block;
+              position: relative;
               text-align: center;
               color: #fff;
               text-decoration: none;
             }
 
+            .add-player .spacer {
+                display: block;
+            }
+
             .add-player div {
+              position: absolute;
+              top: 12px;
+              left: 50%;
+              margin-left: -19%;
               border: 1px solid #fff;
               border-radius: 50%;
-              width: 95px;
-              line-height: 115px;
-              height: 115px;
-              margin: 22.4px auto;
-              position: relative;
+              width: 38%;
+              height: 56%;
             }
 
             .add-player svg {
-              width: 95px;
-              height: 95px;
+              width: 100%;
+              height: 100%;
               position: absolute;
-              top: 50%;
+              top: 0;
               left: 0;
-              margin-top: calc((95px/2) * -1);
             }
 
             .add-player:hover svg polygon,
             .add-player:focus svg polygon {
-              fill: #00B9E4;
+              fill: #fff;
             }
 
             .add-player:hover div,
             .add-player:focus div {
-              border-color: #00B9E4;
+              border-color: #fff;
             }
 
             @media (min-width: 535px) {
               #player-select ul {
                 flex-direction: row;
                 flex-wrap: wrap;
+                width: 80%;
+                margin: 0 auto;
               }
             }
 
             @media (min-width: 535px) and (max-width: 705px) {
               #player-select ul li {
-                width: 50%;
+                width: calc(50% - 2px);
               }
             }
 
             @media (min-width: 706px) {
               #player-select ul li {
-                width: 25%;
+                width: calc(25% - 2px);
               }
             }
 
             @media (min-width: 1150px) {
               #player-select ul li {
-                width: 16.6667%;
+                width: calc(16.6667% - 2px);
               }
             }
 
@@ -253,6 +286,7 @@
           {{/each}}
           <li>
             <a class="add-player" href="https://player-id-node6-rh-search.int.open.paas.redhat.com/">
+              <span class="spacer"><img src="assets/img/spacer.png" alt="" /></span>
               <div>
                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 256 256">
                   <polygon fill="#ffffff" points="217.29,121.67 134.33,121.67 134.33,38.71 121.67,38.71 121.67,121.67 38.71,121.67 38.71,134.33

@@ -18,9 +18,12 @@ class PreloadState extends Phaser.State {
 
         // audio
 
-        this.load.audio('jump', 'assets/sfx/jump.wav');
-        this.load.audio('death', 'assets/sfx/death.wav');
+        this.load.audio('jump', 'assets/sfx/jump2.wav');
+        this.load.audio('death', 'assets/sfx/death2.wav');
         this.load.audio('scream', 'assets/sfx/wilhelm_scream.wav');
+        this.load.audio('skid', 'assets/sfx/skid.wav');
+        this.load.audio('selectScreenMusic', ['assets/sfx/8-Bit-Perplexion.mp3', 'assets/sfx/8-Bit-Perplexion.ogg']);
+        this.load.audio('gamePlayMusic', ['assets/sfx/Pixelin-It-Around-Town.mp3', 'assets/sfx/Pixelin-It-Around-Town.mp3']);
 
         // load the map from Tiled
         this.load.tiledmap(
