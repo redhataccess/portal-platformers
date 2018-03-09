@@ -25,13 +25,19 @@ class PreloadState extends Phaser.State {
         // load the map from Tiled
         this.load.tiledmap(
             cacheKey('sketchworld', 'tiledmap'),
-            'assets/maps/sketchworld/sketchworld-pune.json',
+            'assets/maps/sketchworld/sketchworld.json',
             null,
             Phaser.Tilemap.TILED_JSON
         );
         // load the bg images from the Tiled map
-        this.load.image('sketchworld_layer_pune-1', 'assets/maps/sketchworld/pune-1.jpg');
-        this.load.image('sketchworld_layer_pune-2', 'assets/maps/sketchworld/pune-2.jpg');
+        this.load.image('sketchworld_layer_pune-1', 'assets/maps/sketchworld/backgrounds/pune-1.jpg');
+        this.load.image('sketchworld_layer_pune-2', 'assets/maps/sketchworld/backgrounds/pune-2.jpg');
+        this.load.image('sketchworld_layer_beijing', 'assets/maps/sketchworld/backgrounds/beijing.jpg');
+        this.load.image('sketchworld_layer_brisbane', 'assets/maps/sketchworld/backgrounds/brisbane.jpg');
+        this.load.image('sketchworld_layer_insights-arkansas', 'assets/maps/sketchworld/backgrounds/insights-arkansas.jpg');
+        this.load.image('sketchworld_layer_insights', 'assets/maps/sketchworld/backgrounds/insights.jpg');
+        this.load.image('sketchworld_layer_labs', 'assets/maps/sketchworld/backgrounds/labs.jpg');
+        this.load.image('sketchworld_layer_raleigh', 'assets/maps/sketchworld/backgrounds/raleigh-to-pune.jpg');
 
         this.load.image(
             cacheKey('sketchworld', 'tileset', 'sketchworld'),
@@ -41,9 +47,9 @@ class PreloadState extends Phaser.State {
         // load test player to avoid firebase lag
         this.load.json('test-player', 'data/player.json');
 
-        // this.cache.getJSON('players').forEach((player) => {
-        //     this.load.image(player.name, player.face);
-        // });
+        this.cache.getJSON('players').forEach((player) => {
+            this.load.image(player.name, player.face);
+        });
     }
 
     create() {

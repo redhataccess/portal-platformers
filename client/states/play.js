@@ -32,8 +32,10 @@ class PlayState extends Phaser.State {
         // this.map.setCollisionBetween(1, 100, true, 'World1');
         // this.game.physics.arcade.collide(this.player, this.layer);
 
-        // the phaser-tiled plugin requires casting this.game; not normally recommended
-        this.game.physics.p2.convertTiledCollisionObjects(this.map, 'pune_physics');
+        // init the physics layers
+        ['raleigh', 'pune'].forEach(n => {
+            this.game.physics.p2.convertTiledCollisionObjects(this.map, `${n}_physics`);
+        });
 
         this.cursors = this.game.input.keyboard.createCursorKeys();
 
@@ -82,7 +84,7 @@ class PlayState extends Phaser.State {
 
         if (pressingDown && pressingLeft) {
             moveAmt /= 4;
-            this.player.scale.x = -2;
+            this.player.scale.x = -1;
             this.player.body.thrustLeft(moveAmt);
             this.player.animations.play('crouchwalk');
             this.crouchFace(this.player);
@@ -90,7 +92,7 @@ class PlayState extends Phaser.State {
         }
         else if (pressingDown && pressingRight) {
             moveAmt /= 4;
-            this.player.scale.x = 2;
+            this.player.scale.x = 1;
             this.player.body.thrustRight(moveAmt);
             this.player.animations.play('crouchwalk');
             this.crouchFace(this.player);
@@ -101,7 +103,7 @@ class PlayState extends Phaser.State {
             this.crouchFace(this.player);
         }
         else if (pressingLeft) {
-            this.player.scale.x = -2;
+            this.player.scale.x = -1;
             // change direction quickly
             if (this.player.body.velocity.x > 0) {
                 moveAmt *= 4;
@@ -113,7 +115,7 @@ class PlayState extends Phaser.State {
 
         }
         else if (pressingRight) {
-            this.player.scale.x = 2;
+            this.player.scale.x = 1;
             // change direction quickly
             if (this.player.body.velocity.x < 0) {
                 moveAmt *= 4;
@@ -201,13 +203,13 @@ class PlayState extends Phaser.State {
         if (player.position) {
             playerSprite.position.set(player.position.x, player.position.y);
         };
-        playerSprite.scale.set(2, 2);
+        playerSprite.scale.set(1, 1);
 
         // only enable physics for main player
         if (isMainPlayer) {
             this.game.physics.p2.enable(playerSprite);
             playerSprite.body.fixedRotation = true;
-            playerSprite.body.setRectangle(40, 100, 0, 0); // resize hit box to better reflect mario's actual size on screen
+            playerSprite.body.setRectangle(20, 50, 0, 0); // resize hit box to better reflect mario's actual size on screen
         }
 
         playerSprite.anchor.setTo(0.5);
