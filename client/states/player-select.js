@@ -16,12 +16,17 @@ class PlayerSelectState extends Phaser.State {
         const source   = document.getElementById('player-template').innerHTML.trim();
         this.template = Handlebars.compile(source);
 
+        this.selectScreenMusic = game.add.audio('selectScreenMusic');
+        this.selectScreenMusic.play();
+        this.selectScreenMusic.volume = .2;
+
         this.loadPlayers()
           .then(this.toggleLoader.bind(this))
           .then(this.addPlayers.bind(this));
     }
 
     shutdown() {
+        this.selectScreenMusic.stop();
         this.playerSelect.style.display = "none";
     }
 

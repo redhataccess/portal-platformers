@@ -13,6 +13,10 @@ class PlayState extends Phaser.State {
 
         this.createSounds();
 
+        this.gamePlayMusic = game.add.audio('gamePlayMusic');
+        this.gamePlayMusic.play();
+        this.gamePlayMusic.volume = .1;
+
         // the phaser-tiled plugin requires casting this.game; not normally recommended
         this.map = this.game.add.tiledmap('sketchworld');
         this.game.physics.startSystem(Phaser.Physics.P2JS);
@@ -43,6 +47,7 @@ class PlayState extends Phaser.State {
 
         resetButton.addEventListener('click', () => {
           document.body.removeChild(resetButton);
+          this.gamePlayMusic.stop();
           this.game.state.start('PlayerSelectState', true);
         });
 
@@ -291,9 +296,9 @@ class PlayState extends Phaser.State {
 
     createSounds() {
         this.sounds = {
-            jump: new Phaser.Sound(this.game, 'jump', 0.5),
-            death: new Phaser.Sound(this.game, 'death', 0.5),
-            scream: new Phaser.Sound(this.game, 'wilhelm_scream', 0.5),
+            jump: new Phaser.Sound(this.game, 'jump', 2),
+            death: new Phaser.Sound(this.game, 'death', 1),
+            scream: new Phaser.Sound(this.game, 'wilhelm_scream', 1),
         };
     }
 
