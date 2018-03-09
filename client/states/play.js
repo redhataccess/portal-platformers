@@ -259,12 +259,16 @@ class PlayState extends Phaser.State {
         this.playerSprites[player.id] = playerSprite;
     }
 
+    movePlayer(x=30, y=10) {
+        this.player.body.x = x;
+        this.player.body.y = y;
+        this.player.body.velocity.y = 0;
+        this.player.body.velocity.x = 0;
+    }
+
     revive() {
-      this.player.data.dead = false;
-      this.player.body.x = 30;
-      this.player.body.y = 10;
-      this.player.body.velocity.y = 0;
-      this.player.body.velocity.x = 0;
+        this.player.data.dead = false;
+        this.movePlayer(30, 10);
     }
 
     canJump() {
