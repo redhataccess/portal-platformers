@@ -155,17 +155,25 @@ class PlayState extends Phaser.State {
         this.player.data.airborne = airborne;
 
         // add min/max for x velocity
-        const MAX_VELOCITY = this.player.data.crouching ? 300 : 500;
+        const MAX_X_VELOCITY = this.player.data.crouching ? 300 : 500;
         if (this.player.body.velocity.x > 0) {
-            this.player.body.velocity.x = Math.min(MAX_VELOCITY, this.player.body.velocity.x);
+            this.player.body.velocity.x = Math.min(MAX_X_VELOCITY, this.player.body.velocity.x);
         }
         else if (this.player.body.velocity.x < 0) {
-            this.player.body.velocity.x = Math.max(-MAX_VELOCITY, this.player.body.velocity.x);
+            this.player.body.velocity.x = Math.max(-MAX_X_VELOCITY, this.player.body.velocity.x);
+        }
+
+        const MAX_Y_VELOCITY = 800;
+        if (this.player.body.velocity.y > 0) {
+            this.player.body.velocity.y = Math.min(MAX_Y_VELOCITY, this.player.body.velocity.y);
+        }
+        else if (this.player.body.velocity.y < 0) {
+            this.player.body.velocity.y = Math.max(-MAX_Y_VELOCITY, this.player.body.velocity.y);
         }
 
         // play the skid sound when the player changes direction
         const changedDirection = Math.sign(this.player.data.previousVelocityX) !== Math.sign(this.player.body.velocity.x);
-        console.log(`prev: ${Math.sign(this.player.data.previousVelocityX)}, cur: ${Math.sign(this.player.body.velocity.x)}`);
+        // console.log(`prev: ${Math.sign(this.player.data.previousVelocityX)}, cur: ${Math.sign(this.player.body.velocity.x)}`);
         if (changedDirection) {
             this.playSkidSound();
         }
