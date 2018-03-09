@@ -69,6 +69,8 @@ class PlayState extends Phaser.State {
           return;
         }
 
+        this.player.data.previousVelocityX = 0+this.player.body.velocity.x;
+
         let airborne = !this.canJump();
         let moveAmt = 2000;
         let pressingLeft = this.cursors.left.isDown
@@ -94,9 +96,6 @@ class PlayState extends Phaser.State {
             this.player.body.thrustLeft(moveAmt);
             this.player.animations.play('crouchwalk');
             this.crouchFace(this.player);
-            if (!this.sounds.skid.isPlaying) {
-                this.sounds.skid.play();
-            }
         }
         else if (pressingDown && pressingRight) {
             moveAmt /= 4;
@@ -104,9 +103,6 @@ class PlayState extends Phaser.State {
             this.player.body.thrustRight(moveAmt);
             this.player.animations.play('crouchwalk');
             this.crouchFace(this.player);
-            if (!this.sounds.skid.isPlaying) {
-                this.sounds.skid.play();
-            }
         }
         else if (pressingDown) {
             this.player.animations.play('crouch');
@@ -164,6 +160,13 @@ class PlayState extends Phaser.State {
         }
         else if (this.player.body.velocity.x < 0) {
             this.player.body.velocity.x = Math.max(-MAX_VELOCITY, this.player.body.velocity.x);
+        }
+
+        // play the skid sound when the player changes direction
+        const changedDirection = Math.sign(this.player.data.previousVelocityX) !== Math.sign(this.player.body.velocity.x);
+        console.log(`prev: ${Math.sign(this.player.data.previousVelocityX)}, cur: ${Math.sign(this.player.body.velocity.x)}`);
+        if (changedDirection) {
+            this.playSkidSound();
         }
 
         // check for death
@@ -312,6 +315,12 @@ class PlayState extends Phaser.State {
             scream: new Phaser.Sound(this.game, 'wilhelm_scream', 1),
             skid: new Phaser.Sound(this.game, 'skid', 1),
         };
+    }
+
+    playSkidSound() {
+        if (!this.sounds.skid.isPlaying) {
+            this.sounds.skid.play();
+        }
     }
 
     socketConnect() {
