@@ -60,6 +60,7 @@ class PlayState extends Phaser.State {
     }
     update() {
         if (this.player.data.dead) {
+          this.player.body.velocity.x = 0;
           if (this.player.y + this.player.height / 2 >= this.game.world.height) {
             this.revive();
           }
