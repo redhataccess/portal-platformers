@@ -2591,8 +2591,8 @@ function Objectlayer(game, map, layer, index) {
     this.layerType = layer.type || 'objectgroup';
 
     // translate some tiled properties to our inherited properties
-    this.position.x = layer.x || 0;
-    this.position.y = layer.y || 0;
+    this.position.x = (layer.x || 0) + (layer.offsetx || 0);
+    this.position.y = (layer.y || 0) + (layer.offsety || 0);
     this.alpha = layer.opacity !== undefined ? layer.opacity : 1;
     this.visible = layer.visible !== undefined ? layer.visible : true;
 
