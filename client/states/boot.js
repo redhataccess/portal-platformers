@@ -2,7 +2,6 @@ class BootState extends Phaser.State {
 
     preload() {
         this.load.image('loading-bar', 'assets/sprites/loading-bar.png');
-        this.load.json('players', '../data/players.json');
     }
 
     create() {
