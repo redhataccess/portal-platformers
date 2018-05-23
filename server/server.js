@@ -3,6 +3,7 @@
 const http = require('http');
 const express = require('express');
 const AppServer = require('./AppServer.js');
+const porty = require('porty');
 
 // Patch console.x methods in order to add timestamp information
 require("console-stamp")(console, {pattern: "mm/dd/yyyy HH:MM:ss.l"});
@@ -23,9 +24,14 @@ const MainServer = function () {
     /**
      *  Set up server env variables/defaults.
      */
-    self.setupVariables = function () {
+    self.setupVariables = async function () {
         //  Set the environment variables we need.
-        self.port = process.env.PORT || 8080;
+        if (process.env.PORT) {
+            self.port = process.env.PORT;
+        }
+        else {
+            self.port = await porty.find();
+        }
     };
 
 
@@ -106,8 +112,8 @@ const MainServer = function () {
     /**
      *  Initializes the server
      */
-    self.initialize = function () {
-        self.setupVariables();
+    self.initialize = async function () {
+        await self.setupVariables();
         self.setupTerminationHandlers();
 
         // Create the express server and routes.
@@ -131,6 +137,7 @@ const MainServer = function () {
  *  main():  Main code.
  */
 const mainServer = new MainServer();
-mainServer.initialize();
-mainServer.start();
+mainServer.initialize().then(() => {
+    mainServer.start();
+});
 

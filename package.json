@@ -13,6 +13,7 @@
   "dependencies": {
     "console-stamp": "^0.2.5",
     "express": "^4.15.3",
+    "porty": "^3.1.1",
     "socket.io": "^2.0.3",
     "socket.io-client": "^2.0.3"
   },
