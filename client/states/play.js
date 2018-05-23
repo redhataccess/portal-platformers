@@ -60,6 +60,7 @@ class PlayState extends Phaser.State {
 
         this.socketConnect();
     }
+
     update() {
         if (this.player.data.dead) {
           this.player.body.velocity.x = 0;
@@ -173,6 +174,10 @@ class PlayState extends Phaser.State {
             this.player.body.velocity.y = Math.max(-MAX_Y_VELOCITY, this.player.body.velocity.y);
         }
 
+        // keep name tag aligned
+        this.player.data.playerNameTagText.x = Math.floor(this.player.x);
+        this.player.data.playerNameTagText.y = Math.floor(this.player.y - this.player.height + 15);
+
         // play the skid sound when the player changes direction
         const changedDirection = Math.sign(this.player.data.previousVelocityX) !== Math.sign(this.player.body.velocity.x);
         // console.log(`prev: ${Math.sign(this.player.data.previousVelocityX)}, cur: ${Math.sign(this.player.body.velocity.x)}`);
@@ -224,9 +229,11 @@ class PlayState extends Phaser.State {
     addPlayer(player, isMainPlayer) {
         const playerSprite = this.game.add.sprite(30, 10, 'player');
         playerSprite.data.id = player.id;
+
         if (player.position) {
             playerSprite.position.set(player.position.x, player.position.y);
-        };
+        }
+
         playerSprite.scale.set(1, 1);
 
         // only enable physics for main player
@@ -272,6 +279,11 @@ class PlayState extends Phaser.State {
         playerSprite.addChild(playerSprite.data.faceBorder);
 
         playerSprite.data.faceForward.visible = true;
+
+        // Add player name tag text
+        let style = { font: "12px Arial", fill: "#05d802", align: "center"};
+        playerSprite.data.playerNameTagText = game.add.text(0, 0, player.name, style);
+        playerSprite.data.playerNameTagText.anchor.setTo(0.5);
 
         if (isMainPlayer) {
             window.player = playerSprite;
