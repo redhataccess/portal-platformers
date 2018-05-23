@@ -408,6 +408,10 @@ class PlayState extends Phaser.State {
                             playerSprite.animations.play('idle');
                         }
 
+                        // Update their name tag position
+                        playerSprite.data.playerNameTagText.x = Math.floor(playerSprite.x);
+                        playerSprite.data.playerNameTagText.y = Math.floor(playerSprite.y - playerSprite.height + 15);
+
 
                         if (otherPlayer.dead) {
                             console.log('Other player is dead!!');
