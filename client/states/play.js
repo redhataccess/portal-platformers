@@ -181,7 +181,7 @@ class PlayState extends Phaser.State {
         }
 
         // check for death
-        if (this.player.y + this.player.height / 2 >= this.game.world.height) {
+        if (this.player.y + this.player.height / 2 >= this.game.world.height / this.camera.scale.y) {
           this.killPlayer();
         }
 
