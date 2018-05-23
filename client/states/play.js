@@ -13,6 +13,8 @@ class PlayState extends Phaser.State {
 
         this.createSounds();
 
+        this.camera.scale.set(3, 3);
+
         this.gamePlayMusic = game.add.audio('gamePlayMusic');
         this.gamePlayMusic.play();
         this.gamePlayMusic.volume = .1;
