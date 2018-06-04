@@ -447,9 +447,11 @@ class PlayState extends Phaser.State {
 
         this.socket.on('player_left', function (playerId) {
             let playerSprite = self.playerSprites[playerId];
+            let playerNameTag = playerSprite.data.playerNameTagText;
+            playerNameTag.destroy(true);
+            playerSprite.data.playerNameTagText = null;
             playerSprite.destroy(true);
             delete self.playerSprites[playerId];
-
         });
     }
 
