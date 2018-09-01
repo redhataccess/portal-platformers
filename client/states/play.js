@@ -488,4 +488,13 @@ class PlayState extends Phaser.State {
         this.sounds.death.play();
         // this.sounds.scream.play();
     }
+
+    addMummy(x, y) {
+        this.mummy = game.add.sprite(x, y, 'mummy', 5);
+        this.mummy.scale.set(4);
+        this.mummy.smoothed = true;
+        this.anim = this.mummy.animations.add('walk');
+
+        this.anim.play(10, true);
+    }
 }
